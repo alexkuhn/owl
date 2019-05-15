@@ -248,7 +248,10 @@ export class QWeb extends EventBus {
     }
     for (let elem of <any>templates.children) {
       const name = elem.getAttribute("t-name");
-      this._addTemplate(name, elem);
+      const owl = elem.getAttribute("owl");
+      if (owl) {
+        this._addTemplate(name, elem);
+      }
     }
   }
 

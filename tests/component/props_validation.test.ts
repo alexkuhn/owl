@@ -4,7 +4,6 @@ import { useState } from "../../src/hooks";
 import { QWeb } from "../../src/qweb";
 import { xml } from "../../src/tags";
 
-
 //------------------------------------------------------------------------------
 // Setup and helpers
 //------------------------------------------------------------------------------
@@ -344,15 +343,15 @@ describe("default props", () => {
     class Parent extends Widget {
       static template = xml`<div><TestWidget p="state.p"/></div>`;
       static components = { TestWidget };
-      state:any = useState({p: 1});
+      state: any = useState({ p: 1 });
     }
 
     const w = new Parent(env);
     await w.mount(fixture);
-    expect(fixture.innerHTML).toBe('<div><div>1</div></div>');
+    expect(fixture.innerHTML).toBe("<div><div>1</div></div>");
 
     w.state.p = undefined;
     await nextTick();
-    expect(fixture.innerHTML).toBe('<div><div>4</div></div>');
+    expect(fixture.innerHTML).toBe("<div><div>4</div></div>");
   });
 });

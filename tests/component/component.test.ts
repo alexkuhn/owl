@@ -2470,7 +2470,7 @@ describe("async rendering", () => {
 
     env.qweb.addTemplate("ChildA", `<span>a<t t-esc="props.val"/></span>`);
     class ChildA extends Widget {
-      __updateProps(props, forceUpdate, fiber,p): Promise<void> {
+      __updateProps(props, forceUpdate, fiber, p): Promise<void> {
         return defA.then(() => super.__updateProps(props, forceUpdate, fiber, p));
       }
     }
@@ -2642,172 +2642,6 @@ describe("async rendering", () => {
     expect(destroyCount).toBe(0);
   });
 
-  test.skip("delayed component with t-asyncroot directive", async () => {
-    env.qweb.addTemplates(`
-      <templates>
-        <div t-name="Parent">
-          <button t-on-click="updateApp">Update App State</button>
-          <div class="children">
-            <Child val="state.val"/>
-            <AsyncChild t-asyncroot="1" val="state.val"/>
-          </div>
-        </div>
-        <span t-name="Child"><t t-esc="props.val"/></span>
-      </templates>
-    `);
-
-    let def;
-    class Child extends Widget {}
-    class AsyncChild extends Child {
-      willUpdateProps() {
-        return def;
-      }
-    }
-    class Parent extends Widget {
-      static components = { Child, AsyncChild };
-      state = useState({ val: 0 });
-
-      updateApp() {
-        this.state.val++;
-      }
-    }
-
-    const parent = new Parent(env);
-    await parent.mount(fixture);
-
-    expect(env.qweb.templates.Parent.fn.toString()).toMatchSnapshot();
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>0</span><span>0</span>");
-
-    // click on button to increment Parent counter
-    def = makeDeferred();
-    fixture.querySelector("button")!.click();
-    await nextTick();
-
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>1</span><span>0</span>");
-
-    def.resolve();
-    await nextTick();
-
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>1</span><span>1</span>");
-  });
-
-  test.skip("fast component with t-asyncroot directive", async () => {
-    env.qweb.addTemplates(`
-      <templates>
-        <div t-name="Parent">
-          <button t-on-click="updateApp">Update App State</button>
-          <div class="children">
-            <Child t-asyncroot="1" val="state.val"/>
-            <AsyncChild val="state.val"/>
-          </div>
-        </div>
-        <span t-name="Child"><t t-esc="props.val"/></span>
-      </templates>
-    `);
-
-    let def;
-    class Child extends Widget {}
-    class AsyncChild extends Child {
-      willUpdateProps() {
-        return def;
-      }
-    }
-    class Parent extends Widget {
-      static components = { Child, AsyncChild };
-      state = useState({ val: 0 });
-
-      updateApp() {
-        this.state.val++;
-      }
-    }
-
-    const parent = new Parent(env);
-    await parent.mount(fixture);
-
-    expect(env.qweb.templates.Parent.fn.toString()).toMatchSnapshot();
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>0</span><span>0</span>");
-
-    // click on button to increment Parent counter
-    def = makeDeferred();
-    fixture.querySelector("button")!.click();
-    await nextTick();
-
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>1</span><span>0</span>");
-
-    def.resolve();
-    await nextTick();
-
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>1</span><span>1</span>");
-  });
-
-  test.skip("t-component with t-asyncroot directive: mixed re-renderings", async () => {
-    env.qweb.addTemplates(`
-      <templates>
-        <div t-name="Parent">
-          <button t-on-click="updateApp">Update App State</button>
-          <div class="children">
-            <Child val="state.val"/>
-            <AsyncChild t-asyncroot="1" val="state.val"/>
-          </div>
-        </div>
-        <span t-name="Child" t-on-click="increment">
-          <t t-esc="state.val"/>/<t t-esc="props.val"/>
-        </span>
-      </templates>
-    `);
-
-    let def;
-    class Child extends Widget {
-      state = useState({ val: 0 });
-
-      increment() {
-        this.state.val++;
-      }
-    }
-    class AsyncChild extends Child {
-      willUpdateProps() {
-        return def;
-      }
-    }
-    class Parent extends Widget {
-      static components = { Child, AsyncChild };
-      state = useState({ val: 0 });
-
-      updateApp() {
-        this.state.val++;
-      }
-    }
-
-    const parent = new Parent(env);
-    await parent.mount(fixture);
-
-    expect(env.qweb.templates.Parent.fn.toString()).toMatchSnapshot();
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>0/0</span><span>0/0</span>");
-
-    // click on button to increment Parent counter
-    def = makeDeferred();
-    fixture.querySelector("button")!.click();
-    await nextTick();
-
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>0/1</span><span>0/0</span>");
-
-    // click on each Child to increment their local counter
-    const children = parent.el!.querySelectorAll("span");
-    children[0]!.click();
-    await nextTick();
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>1/1</span><span>0/0</span>");
-
-    children[1]!.click();
-    await nextTick();
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>1/1</span><span>1/0</span>");
-
-    // finalize first re-rendering (coming from the props update)
-    def.resolve();
-    await nextTick();
-
-    expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>1/1</span><span>1/1</span>");
-  });
-
   test("rendering component again in next microtick", async () => {
     class Child extends Widget {}
 
@@ -2932,24 +2766,28 @@ describe("async rendering", () => {
 
     expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
 
-    console.warn('------------------------------------------------- SET STATE COMPONENT A');
+    console.warn("------------------------------------------------- SET STATE COMPONENT A");
     component.state.fromA = 2;
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
 
-    console.warn('------------------------------------------------- SET STATE COMPONENT B');
+    console.warn("------------------------------------------------- SET STATE COMPONENT B");
     stateB.fromB = "c";
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
 
-    console.warn('------------------------------------------------- RESOLVE RENDERING INITIATED IN B');
+    console.warn(
+      "------------------------------------------------- RESOLVE RENDERING INITIATED IN B"
+    );
     defs[1].resolve(); // resolve rendering initiated in B
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
     expect(ComponentA.prototype.__applyPatchQueue).toBeCalledTimes(1);
     expect(ComponentB.prototype.__applyPatchQueue).toBeCalledTimes(0);
 
-    console.warn('------------------------------------------------- RESOLVE RENDERING INITIATED IN A');
+    console.warn(
+      "------------------------------------------------- RESOLVE RENDERING INITIATED IN A"
+    );
     defs[0].resolve(); // resolve rendering initiated in A
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
@@ -2992,24 +2830,28 @@ describe("async rendering", () => {
 
     expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
 
-    console.warn('------------------------------------------------- SET STATE COMPONENT A');
+    console.warn("------------------------------------------------- SET STATE COMPONENT A");
     component.state.fromA = 2;
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
 
-    console.warn('------------------------------------------------- SET STATE COMPONENT B');
+    console.warn("------------------------------------------------- SET STATE COMPONENT B");
     stateB.fromB = "c";
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
 
-    console.warn('------------------------------------------------- RESOLVE RENDERING INITIATED IN A');
+    console.warn(
+      "------------------------------------------------- RESOLVE RENDERING INITIATED IN A"
+    );
     defs[0].resolve(); // resolve rendering initiated in A
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>"); // TODO: is this what we want?? 2b could be ok too
     expect(ComponentA.prototype.__applyPatchQueue).toBeCalledTimes(0);
     expect(ComponentB.prototype.__applyPatchQueue).toBeCalledTimes(0);
 
-    console.warn('------------------------------------------------- RESOLVE RENDERING INITIATED IN B');
+    console.warn(
+      "------------------------------------------------- RESOLVE RENDERING INITIATED IN B"
+    );
     defs[1].resolve(); // resolve rendering initiated in B
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");

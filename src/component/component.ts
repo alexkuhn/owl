@@ -57,7 +57,7 @@ export interface Fiber<Props> {
   rootFiber: Fiber<any> | null;
   component: Component<any, any>;
   vnode: VNode | null;
-//   patchQueue: Fiber<any>[];
+  //   patchQueue: Fiber<any>[];
   //   handlers?: any;
   //   mountedHandlers?: any;
 }
@@ -355,8 +355,9 @@ export class Component<T extends Env, Props extends {}> {
     fiber.promise = this.__render(fiber);
     await fiber.promise;
 
-    if (__owl__.isMounted && fiber === __owl__.currentFiber) { // check is we can remove this
-    // if (__owl__.isMounted && !fiber.isCancelled) {
+    if (__owl__.isMounted && fiber === __owl__.currentFiber) {
+      // check is we can remove this
+      // if (__owl__.isMounted && !fiber.isCancelled) {
       // we only update the vnode and the actual DOM if no other rendering
       // occurred between now and when the render method was initially called.
       this.__applyPatchQueue(fiber);
@@ -430,7 +431,7 @@ export class Component<T extends Env, Props extends {}> {
       child: null,
       sibling: null,
       parent: parent || null,
-      shouldPatch: true,
+      shouldPatch: true
     };
 
     fiber.rootFiber = parent ? parent.rootFiber : fiber;
@@ -517,7 +518,7 @@ export class Component<T extends Env, Props extends {}> {
     parentFiber: Fiber<any>,
     scope: any,
     vars: any,
-    previousSibling?: Fiber<any> | null,
+    previousSibling?: Fiber<any> | null
   ): Promise<void> {
     const shouldUpdate = parentFiber.force || this.shouldUpdate(nextProps);
     if (shouldUpdate) {
@@ -526,7 +527,7 @@ export class Component<T extends Env, Props extends {}> {
       if (!parentFiber.child) {
         parentFiber.child = fiber;
       } else {
-          previousSibling!.sibling = fiber;
+        previousSibling!.sibling = fiber;
       }
 
       const defaultProps = (<any>this.constructor).defaultProps;
@@ -693,13 +694,13 @@ export class Component<T extends Env, Props extends {}> {
    *   3) Call 'patched' on the component of each patch, in reverse order
    */
   __applyPatchQueue(fiber: Fiber<Props>) {
-    const patchQueue:Fiber<any>[] = [];
-    const doWork:(Fiber) => Fiber<any> | null = function (f) {
+    const patchQueue: Fiber<any>[] = [];
+    const doWork: (Fiber) => Fiber<any> | null = function(f) {
       if (f.shouldPatch) {
         patchQueue.push(f);
       }
       return f.child;
-    }
+    };
     this.__walk(fiber, doWork);
 
     let component: Component<any, any> = this;
@@ -754,7 +755,6 @@ export class Component<T extends Env, Props extends {}> {
       current = current.sibling;
     }
   }
-
 }
 
 //------------------------------------------------------------------------------

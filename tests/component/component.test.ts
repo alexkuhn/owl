@@ -2849,7 +2849,7 @@ describe("async rendering", () => {
     expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
   });
 
-  test.skip("concurrent renderings scenario 2", async () => {
+  test.only("concurrent renderings scenario 2", async () => {
     // this test assets that a rendering initiated before another one, and that
     // ends after it, is re-mapped to that second rendering
     const defs = [makeDeferred(), makeDeferred()];

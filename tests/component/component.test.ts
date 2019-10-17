@@ -3696,7 +3696,7 @@ describe("t-slot directive", () => {
     expect(fixture.innerHTML).toBe(`<a href="abc">hey</a>`);
   });
 
-  test("template can just return a slot", async () => {
+  test.skip("template can just return a slot", async () => {
     class Child extends Widget {
       static template = xml`<span><t t-esc="props.value"/></span>`;
     }

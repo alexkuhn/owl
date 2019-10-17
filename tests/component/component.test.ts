@@ -2849,7 +2849,7 @@ describe("async rendering", () => {
     expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
   });
 
-  test.only("concurrent renderings scenario 2", async () => {
+  test("concurrent renderings scenario 2", async () => {
     // this test asserts that a rendering initiated before another one, and that
     // ends after it, is re-mapped to that second rendering
     const defs = [makeDeferred(), makeDeferred()];
@@ -3246,8 +3246,7 @@ describe("widget and observable state", () => {
     widget.state.drink = "beer";
 
     // 2 microtask ticks: one for observer, one for rendering
-    await nextMicroTick();
-    await nextMicroTick();
+    await nextTick();
     expect(fixture.innerHTML).toBe("<div>beer</div>");
   });
 

@@ -58,6 +58,7 @@ export interface Fiber<Props> {
   parent: Fiber<any> | null;
   shouldPatch: boolean;
   updatePromise: () => void;
+  pending: boolean;
   //   handlers?: any;
   //   mountedHandlers?: any;
 }
@@ -349,9 +350,9 @@ export class Component<T extends Env, Props extends {}> {
    */
   async render(force: boolean = false): Promise<void> {
     const __owl__ = this.__owl__;
-    // if (!__owl__.isMounted) { // TODO: when there are two concurrent renderings, isMounted is false
-    //   return;
-    // }
+    if (!__owl__.isMounted && (!__owl__.currentFiber || !__owl__.currentFiber.pending)) {
+      return;
+    }
     const fiber = this.__createFiber(force, undefined, undefined, undefined);
     console.warn("render", fiber.id);
     await this.__render(fiber);
@@ -471,10 +472,12 @@ export class Component<T extends Env, Props extends {}> {
             if (fiber.parent) {
               console.warn(fiber.parent!.vnode);
             }
+            fiber.pending = false;
             resolve(fiber.vnode);
           }
         });
-      }
+      },
+      pending: true,
       // resolve
     };
 
@@ -498,7 +501,7 @@ export class Component<T extends Env, Props extends {}> {
     }
 
     const oldFiber = this.__owl__.currentFiber!;
-    if (!parent && oldFiber) { // TODO: not sure about the !parent
+    if (!parent && oldFiber && oldFiber.pending) { // TODO: not sure about the !parent
       // cancel the oldFiber and all its subsequent fibers
       const cancelFibers: (Fiber) => Fiber<any> = function(f) {
         f.isCancelled = true;
@@ -819,7 +822,7 @@ export class Component<T extends Env, Props extends {}> {
     };
     this._walk(fiber, doWork);
     let component: Component<any, any> = this;
-    // try {
+    try {
       const patchLen = patchQueue.length;
       for (let i = 0; i < patchLen; i++) {
         component = patchQueue[i].component;
@@ -840,9 +843,9 @@ export class Component<T extends Env, Props extends {}> {
           component.__owl__.patchedCB();
         }
       }
-    // } catch (e) {
-    //   errorHandler(e, component);
-    // }
+    } catch (e) {
+      errorHandler(e, component);
+    }
   }
 
   /**

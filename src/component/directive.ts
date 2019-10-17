@@ -387,8 +387,7 @@ QWeb.addDirective({
     }
     ctx.addIf(
       // `w${componentID} && w${componentID}.__owl__.currentFiber && !w${componentID}.__owl__.vnode`
-      // `w${componentID} && w${componentID}.__owl__.currentFiber && !w${componentID}.__owl__.currentFiber.vnode`
-      `w${componentID} && w${componentID}.__owl__.currentFiber && false`
+      `w${componentID} && w${componentID}.__owl__.currentFiber && !w${componentID}.__owl__.currentFiber.pending && !w${componentID}.__owl__.currentFiber.vnode`
     );
     ctx.addIf(
       `utils.shallowEqual(props${componentID}, w${componentID}.__owl__.currentFiber.props)`

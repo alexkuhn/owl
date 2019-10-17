@@ -283,6 +283,10 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
     newCh: Array<VNode>,
     insertedVnodeQueue: VNodeQueue
   ) {
+    // console.warn('********** updateChildren ********** ');
+    // console.warn(parentElm);
+    // console.warn(oldCh);
+    // console.warn(newCh);
     let oldStartIdx = 0,
       newStartIdx = 0;
     let oldEndIdx = oldCh.length - 1;

@@ -50,13 +50,14 @@ export interface Fiber<Props> {
   component: Component<any, any>;
   vnode: VNode | null;
   props: Props;
-  promise: Promise<VNode> | null;
+  promise: Promise<any>;
 
   child: Fiber<any> | null;
   lastChild: Fiber<any> | null;
   sibling: Fiber<any> | null;
   parent: Fiber<any> | null;
   shouldPatch: boolean;
+  updatePromise: () => void;
   //   handlers?: any;
   //   mountedHandlers?: any;
 }
@@ -147,6 +148,8 @@ export class Component<T extends Env, Props extends {}> {
    * the t-component directive in a template)
    */
   constructor(parent: Component<T, any> | T, props?: Props) {
+    // console.warn('NEW COMPONENT', this.constructor.name);
+    // console.warn('parent', parent);
     const defaultProps = (<any>this.constructor).defaultProps;
     Component.current = this;
     if (defaultProps) {
@@ -306,8 +309,7 @@ export class Component<T extends Env, Props extends {}> {
     }
     const fiber = this.__createFiber(false, undefined, undefined, undefined);
     if (!__owl__.vnode) {
-      fiber.promise = this.__prepareAndRender(fiber);
-      const vnode = await fiber.promise;
+      const vnode = await this.__prepareAndRender(fiber);
       if (__owl__.isDestroyed) {
         // component was destroyed before we get here...
         return;
@@ -315,8 +317,7 @@ export class Component<T extends Env, Props extends {}> {
       this.__patch(vnode);
     } else if (renderBeforeRemount) {
       // fiber.patchQueue.push(fiber);
-      fiber.promise = this.__render(fiber);
-      await fiber.promise;
+      await this.__render(fiber);
       this.__applyPatchQueue(fiber);
     }
     target.appendChild(this.el!);
@@ -348,16 +349,17 @@ export class Component<T extends Env, Props extends {}> {
    */
   async render(force: boolean = false): Promise<void> {
     const __owl__ = this.__owl__;
-    if (!__owl__.isMounted) {
-      return;
-    }
+    // if (!__owl__.isMounted) { // TODO: when there are two concurrent renderings, isMounted is false
+    //   return;
+    // }
     const fiber = this.__createFiber(force, undefined, undefined, undefined);
-    // fiber.patchQueue.push(fiber);
-    fiber.promise = this.__render(fiber);
-    await fiber.promise;
+    console.warn("render", fiber.id);
+    await this.__render(fiber);
 
-    if (__owl__.isMounted && fiber === __owl__.currentFiber) { // check is we can remove this
-    // if (__owl__.isMounted && !fiber.isCancelled) {
+    console.warn("render done", fiber.id);
+    // if (__owl__.isMounted && fiber === __owl__.currentFiber) { // check is we can remove this
+    if (__owl__.isMounted && !fiber.isCancelled && fiber === fiber.rootFiber) {
+      console.warn("patch", fiber.id);
       // we only update the vnode and the actual DOM if no other rendering
       // occurred between now and when the render method was initially called.
       this.__applyPatchQueue(fiber);
@@ -418,6 +420,7 @@ export class Component<T extends Env, Props extends {}> {
    * This method is a helper to create a fiber element.
    */
   __createFiber(force, scope, vars, parent?: Fiber<any>): Fiber<Props> {
+    let resolve;
     const fiber: Fiber<Props> = {
       id: nextID++,
       force,
@@ -427,19 +430,58 @@ export class Component<T extends Env, Props extends {}> {
       isCancelled: false,
       component: this,
       vnode: null,
-      // patchQueue: parent ? parent.patchQueue : [],
       props: this.props,
-      promise: null,
+      promise: new Promise(function(r) {
+        resolve = r;
+      }),
 
       child: null,
       lastChild: null,
       sibling: null,
       parent: parent || null,
       shouldPatch: true,
-
-      // parent
+      updatePromise: function() {
+        const children: Fiber<any>[] = [];
+        let current = fiber.child;
+        while (current) {
+          children.push(current);
+          current = current.sibling;
+        }
+        console.warn("updatePromise", fiber.id);
+        if (fiber.id === 3) {
+          // console.warn(fiber);
+        }
+        console.warn(children.map(c => c.id));
+        const promises: (Promise<any> | null)[] = children.map(c => c.promise);
+        console.warn(promises);
+        Promise.all(promises).then(function() {
+          console.warn("then", fiber.id);
+          console.warn(children.map(c => c.id));
+          if (!children.some(c => c.isCancelled)) {
+            // TODO: add a test to check the isCancelled here (scenario 2 but resolve proms the other way around)
+            console.warn("******************resolve******************");
+            if (fiber.parent) {
+              console.warn(fiber.parent!.vnode);
+            }
+            console.warn(fiber.vnode);
+            if (fiber.parent) { // TODO: this is completely wrong: we need to now at which index to put the new vnode
+              fiber.parent.vnode!.children = [<any>fiber.vnode];
+            }
+            if (fiber.parent) {
+              console.warn(fiber.parent!.vnode);
+            }
+            resolve(fiber.vnode);
+          }
+        });
+      }
       // resolve
     };
+
+    if (fiber.id === 6) {
+      // console.warn(fiber);
+      // console.warn(parent);
+      // console.warn(this.__owl__.currentFiber);
+    }
 
     if (parent) {
       if (!parent.child) {
@@ -449,9 +491,43 @@ export class Component<T extends Env, Props extends {}> {
         parent.lastChild.sibling = fiber;
       }
       parent.lastChild = fiber;
+      fiber.rootFiber = parent.rootFiber;
+    } else {
+      fiber.rootFiber = fiber;
     }
 
-    fiber.rootFiber = parent ? parent.rootFiber : fiber;
+    const oldFiber = this.__owl__.currentFiber!;
+    if (!parent && oldFiber) { // TODO: not sure about the !parent
+      // cancel the oldFiber and all its subsequent fibers
+      const cancelFibers: (Fiber) => Fiber<any> = function(f) {
+        f.isCancelled = true;
+        return f.child;
+      };
+      this._walk(oldFiber, cancelFibers);
+      if (oldFiber.parent) {
+        console.log('******** ICI **********************$');
+        console.warn(oldFiber.vnode);
+        console.warn(fiber);
+        fiber.parent = oldFiber.parent;
+        fiber.parent.child = fiber; // TODO: not always child, sometimes sibling of a child...
+        fiber.rootFiber = oldFiber.rootFiber;
+        if (oldFiber.parent.lastChild === oldFiber) {
+          oldFiber.parent.lastChild = fiber;
+        }
+        oldFiber.parent = null;
+        fiber.parent.updatePromise();
+      }
+      oldFiber.rootFiber = oldFiber;
+    }
+
+    if (fiber.id === 6) {
+      console.warn("------");
+      // console.warn(fiber);
+      // console.warn(parent);
+      // console.warn(this.__owl__.currentFiber);
+      // console.warn(fiber.parent);
+    }
+
     this.__owl__.currentFiber = fiber;
     return fiber;
   }
@@ -468,6 +544,10 @@ export class Component<T extends Env, Props extends {}> {
    * all children many times.
    */
   __destroy(parent: Component<any, any> | null) {
+    // console.warn('**********************************************************HO PUTAIN DE MERDE')
+    // console.warn(this.constructor.name);
+    // console.warn(this.__owl__.id);
+    // console.trace();
     const __owl__ = this.__owl__;
     const isMounted = __owl__.isMounted;
     if (isMounted) {
@@ -538,30 +618,32 @@ export class Component<T extends Env, Props extends {}> {
   ): Promise<void> {
     const shouldUpdate = parentFiber.force || this.shouldUpdate(nextProps);
     if (shouldUpdate) {
-      this.__owl__.currentFiber!.rootFiber!.isCancelled = true; // cancel in createFiber??
       const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
-      // fiber.patchQueue.push(fiber);
+      console.warn('__updateProps', fiber.id);
       const defaultProps = (<any>this.constructor).defaultProps;
       if (defaultProps) {
         nextProps = this.__applyDefaultProps(nextProps, defaultProps);
       }
-      // check fiber cancelled here as well
-      let resolve;
-      fiber.promise = new Promise(function (r) {
-        resolve = r;
-      });
+      // TODO: check fiber cancelled here as well
+      // let resolve;
+      // fiber.promise = new Promise(function (r) {
+      //   resolve = r;
+      // });
       await Promise.all([
         this.willUpdateProps(nextProps),
         this.__owl__.willUpdatePropsCB && this.__owl__.willUpdatePropsCB(nextProps)
       ]);
+      console.warn("willUpdateProps done", fiber.id);
       if (parentFiber.rootFiber!.isCancelled) {
         return;
       }
       this.props = nextProps;
 
-      const vnode = await this.__render(fiber);
-      resolve(vnode);
-      return <any>fiber.promise;
+      await this.__render(fiber);
+      console.warn("__render done", fiber.id);
+      // const vnode = await this.__render(fiber);
+      // resolve(vnode);
+      // return <any>fiber.promise;
     }
   }
 
@@ -572,6 +654,7 @@ export class Component<T extends Env, Props extends {}> {
   __patch(vnode) {
     const __owl__ = this.__owl__;
     const target = __owl__.vnode || document.createElement(vnode.sel!);
+    console.log('_patch', vnode);
     __owl__.vnode = patch(target, vnode);
   }
 
@@ -583,8 +666,9 @@ export class Component<T extends Env, Props extends {}> {
   __prepare(parentFiber: Fiber<any>, scope: any, vars: any): Promise<VNode> {
     const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
     fiber.shouldPatch = false;
-    fiber.promise = this.__prepareAndRender(fiber);
-    return fiber.promise;
+    console.warn('__prepare', fiber.id);
+    console.trace()
+    return this.__prepareAndRender(fiber);
   }
 
   __getTemplate(qweb: QWeb): string {
@@ -625,6 +709,12 @@ export class Component<T extends Env, Props extends {}> {
   }
 
   __render(fiber: Fiber<Props>): Promise<VNode> {
+    console.warn('__render', fiber.id);
+    // if (fiber.id === 3) {
+    //   console.warn(this.__owl__.cmap);
+    //   console.warn(this.__owl__.children[this.__owl__.cmap[4]]);
+    //   console.warn(this.__owl__.vnode);
+    // }
     const __owl__ = this.__owl__;
     // const promises: Promise<void>[] = [];
     if (__owl__.observer) {
@@ -642,6 +732,7 @@ export class Component<T extends Env, Props extends {}> {
       errorHandler(e, this);
     }
     fiber.vnode = vnode;
+    fiber.updatePromise();
     if (__owl__.observer) {
       __owl__.observer.allowMutations = true;
     }
@@ -659,13 +750,7 @@ export class Component<T extends Env, Props extends {}> {
     if (__owl__.classObj) {
       vnode.data.class = Object.assign(vnode.data.class || {}, __owl__.classObj);
     }
-    const promises:Promise<VNode>[] = [];
-    let current = fiber.child;
-    while (current) {
-      promises.push(current.promise!);
-      current = current.sibling;
-    }
-    return Promise.all(promises).then(() => vnode);
+    return fiber.promise.then(() => vnode);
   }
 
   /**
@@ -677,6 +762,9 @@ export class Component<T extends Env, Props extends {}> {
       (<any>vnode).data.class = Object.assign((<any>vnode).data.class || {}, __owl__.classObj);
     }
     __owl__.vnode = patch(elm, vnode);
+    console.log(this.constructor.name);
+    console.log(this.__owl__.id);
+    // console.log(this.__owl__.parent.id);
     if (__owl__.parent!.__owl__.isMounted && !__owl__.isMounted) {
       this.__callMounted();
     }
@@ -717,16 +805,16 @@ export class Component<T extends Env, Props extends {}> {
    *   3) Call 'patched' on the component of each patch, in reverse order
    */
   __applyPatchQueue(fiber: Fiber<Props>) {
-    const patchQueue:Fiber<any>[] = [];
-    const doWork:(Fiber) => Fiber<any> | null = function (f) {
+    const patchQueue: Fiber<any>[] = [];
+    const doWork: (Fiber) => Fiber<any> | null = function(f) {
       if (f.shouldPatch) {
         patchQueue.push(f);
       }
       return f.child;
-    }
+    };
     this._walk(fiber, doWork);
     let component: Component<any, any> = this;
-    try {
+    // try {
       const patchLen = patchQueue.length;
       for (let i = 0; i < patchLen; i++) {
         component = patchQueue[i].component;
@@ -747,9 +835,9 @@ export class Component<T extends Env, Props extends {}> {
           component.__owl__.patchedCB();
         }
       }
-    } catch (e) {
-      errorHandler(e, component);
-    }
+    // } catch (e) {
+    //   errorHandler(e, component);
+    // }
   }
 
   /**

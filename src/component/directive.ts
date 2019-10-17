@@ -386,13 +386,16 @@ QWeb.addDirective({
       ctx.addLine(`let props${componentID} = {${propStr}};`);
     }
     ctx.addIf(
-      `w${componentID} && w${componentID}.__owl__.currentFiber && !w${componentID}.__owl__.vnode`
+      // `w${componentID} && w${componentID}.__owl__.currentFiber && !w${componentID}.__owl__.vnode`
+      // `w${componentID} && w${componentID}.__owl__.currentFiber && !w${componentID}.__owl__.currentFiber.vnode`
+      `w${componentID} && w${componentID}.__owl__.currentFiber && false`
     );
     ctx.addIf(
       `utils.shallowEqual(props${componentID}, w${componentID}.__owl__.currentFiber.props)`
     );
     ctx.addLine(`def${defID} = w${componentID}.__owl__.currentFiber.promise;`);
     ctx.addElse();
+    ctx.addLine(`console.warn("DESTROY WIDGET DIRECTIVE");`);
     ctx.addLine(`w${componentID}.destroy();`);
     ctx.addLine(`w${componentID} = false;`);
     ctx.closeIf();
@@ -471,6 +474,7 @@ QWeb.addDirective({
     }
     ctx.addLine(
       `def${defID} = def${defID}.then(vnode=>{if (w${componentID}.__owl__.isDestroyed){return}${createHook}let pvnode=h(vnode.sel, {key: ${templateID}, hook: {insert(vn) {let nvn=w${componentID}.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;${refExpr}${transitionsInsertCode}},remove() {},destroy(vn) {${finalizeComponentCode}}}});${registerCode}w${componentID}.__owl__.pvnode = pvnode;});`
+      // `def${defID} = def${defID}.then(vnode=>{if (w${componentID}.__owl__.isDestroyed){return}${createHook}let pvnode=h(vnode.sel, {key: ${templateID}, hook: {insert(vn) {let nvn=w${componentID}.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;${refExpr}${transitionsInsertCode}},remove() {},destroy(vn) {console.warn('FINALIZE CODE');console.trace();${finalizeComponentCode}}}});${registerCode}w${componentID}.__owl__.pvnode = pvnode;});`
     );
 
     ctx.addElse();

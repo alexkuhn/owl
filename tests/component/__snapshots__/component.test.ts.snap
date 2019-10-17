@@ -1,5 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`async rendering concurrent renderings scenario 2 1`] = `
+"function (context, extra) {
+                const compiledFunction = this._compile(name, elem);
+                template.fn = compiledFunction;
+                return compiledFunction.call(this, context, extra);
+            }"
+`;
+
+exports[`async rendering concurrent renderings scenario 2 2`] = `
+"function (context, extra) {
+                const compiledFunction = this._compile(name, elem);
+                template.fn = compiledFunction;
+                return compiledFunction.call(this, context, extra);
+            }"
+`;
+
+exports[`async rendering concurrent renderings scenario 2 3`] = `
+"function (context, extra) {
+                const compiledFunction = this._compile(name, elem);
+                template.fn = compiledFunction;
+                return compiledFunction.call(this, context, extra);
+            }"
+`;
+
 exports[`async rendering delayed component with t-asyncroot directive 1`] = `
 "function anonymous(context,extra
 ) {

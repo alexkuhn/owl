@@ -1,29 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`async rendering concurrent renderings scenario 2 1`] = `
-"function (context, extra) {
-                const compiledFunction = this._compile(name, elem);
-                template.fn = compiledFunction;
-                return compiledFunction.call(this, context, extra);
-            }"
-`;
-
-exports[`async rendering concurrent renderings scenario 2 2`] = `
-"function (context, extra) {
-                const compiledFunction = this._compile(name, elem);
-                template.fn = compiledFunction;
-                return compiledFunction.call(this, context, extra);
-            }"
-`;
-
-exports[`async rendering concurrent renderings scenario 2 3`] = `
-"function (context, extra) {
-                const compiledFunction = this._compile(name, elem);
-                template.fn = compiledFunction;
-                return compiledFunction.call(this, context, extra);
-            }"
-`;
-
 exports[`async rendering delayed component with t-asyncroot directive 1`] = `
 "function anonymous(context,extra
 ) {
@@ -287,10 +263,11 @@ exports[`class and style attributes with t-component dynamic t-att-style is prop
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -444,10 +421,11 @@ exports[`class and style attributes with t-component t-att-class is properly add
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -587,10 +565,11 @@ exports[`composition t-component with dynamic value 1`] = `
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -627,10 +606,11 @@ exports[`composition t-component with dynamic value 2 1`] = `
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -667,10 +647,11 @@ exports[`dynamic t-props basic use 1`] = `
     let _2_index = c1.length;
     c1.push(null);
     let props4 = Object.assign({}, context['some'].obj);
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -750,10 +731,11 @@ exports[`other directives with t-component t-on with handler bound to argument 1
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -790,10 +772,11 @@ exports[`other directives with t-component t-on with handler bound to empty obje
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -830,10 +813,11 @@ exports[`other directives with t-component t-on with handler bound to empty obje
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -870,10 +854,11 @@ exports[`other directives with t-component t-on with handler bound to object 1`]
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -1030,10 +1015,11 @@ exports[`other directives with t-component t-on with stop and/or prevent modifie
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -1089,10 +1075,11 @@ exports[`random stuff/miscellaneous snapshotting compiled code 1`] = `
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {flag:context['state'].flag};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -1147,10 +1134,11 @@ exports[`random stuff/miscellaneous t-on with handler bound to dynamic argument 
         let _5_index = c1.length;
         c1.push(null);
         let props7 = {};
-        if (w7 && w7.__owl__.currentFiber && !w7.__owl__.vnode) {
+        if (w7 && w7.__owl__.currentFiber && false) {
             if (utils.shallowEqual(props7, w7.__owl__.currentFiber.props)) {
                 def6 = w7.__owl__.currentFiber.promise;
             } else {
+                console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
                 w7.destroy();
                 w7 = false;
             }
@@ -1386,10 +1374,11 @@ exports[`t-slot directive can define and call slots 1`] = `
     let _2_index = c1.length;
     c1.push(null);
     let props4 = {};
-    if (w4 && w4.__owl__.currentFiber && !w4.__owl__.vnode) {
+    if (w4 && w4.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props4, w4.__owl__.currentFiber.props)) {
             def3 = w4.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w4.destroy();
             w4 = false;
         }
@@ -1786,10 +1775,11 @@ exports[`t-slot directive slots are rendered with proper context, part 4 1`] = `
     let _3_index = c1.length;
     c1.push(null);
     let props5 = {to:'/user/'+context['state'].user.id};
-    if (w5 && w5.__owl__.currentFiber && !w5.__owl__.vnode) {
+    if (w5 && w5.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props5, w5.__owl__.currentFiber.props)) {
             def4 = w5.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w5.destroy();
             w5 = false;
         }
@@ -1857,10 +1847,11 @@ exports[`top level sub widgets basic use 1`] = `
     let vn4 = {};
     result = vn4;
     let props3 = {p:1};
-    if (w3 && w3.__owl__.currentFiber && !w3.__owl__.vnode) {
+    if (w3 && w3.__owl__.currentFiber && false) {
         if (utils.shallowEqual(props3, w3.__owl__.currentFiber.props)) {
             def2 = w3.__owl__.currentFiber.promise;
         } else {
+            console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
             w3.destroy();
             w3 = false;
         }
@@ -1897,10 +1888,11 @@ exports[`top level sub widgets can select a sub widget  1`] = `
         let vn4 = {};
         result = vn4;
         let props3 = {};
-        if (w3 && w3.__owl__.currentFiber && !w3.__owl__.vnode) {
+        if (w3 && w3.__owl__.currentFiber && false) {
             if (utils.shallowEqual(props3, w3.__owl__.currentFiber.props)) {
                 def2 = w3.__owl__.currentFiber.promise;
             } else {
+                console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
                 w3.destroy();
                 w3 = false;
             }
@@ -1925,10 +1917,11 @@ exports[`top level sub widgets can select a sub widget  1`] = `
         let vn8 = {};
         result = vn8;
         let props7 = {};
-        if (w7 && w7.__owl__.currentFiber && !w7.__owl__.vnode) {
+        if (w7 && w7.__owl__.currentFiber && false) {
             if (utils.shallowEqual(props7, w7.__owl__.currentFiber.props)) {
                 def6 = w7.__owl__.currentFiber.promise;
             } else {
+                console.warn(\\"DESTROY WIDGET DIRECTIVE\\");
                 w7.destroy();
                 w7 = false;
             }

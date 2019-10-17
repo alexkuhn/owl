@@ -359,6 +359,7 @@ export class Component<T extends Env, Props extends {}> {
     console.warn("render done", fiber.id);
     // if (__owl__.isMounted && fiber === __owl__.currentFiber) { // check is we can remove this
     if (__owl__.isMounted && !fiber.isCancelled && fiber === fiber.rootFiber) {
+      // fiber could not be the rootFiber if it has been re-mapped on another fiber
       console.warn("patch", fiber.id);
       // we only update the vnode and the actual DOM if no other rendering
       // occurred between now and when the render method was initially called.
@@ -458,13 +459,13 @@ export class Component<T extends Env, Props extends {}> {
           console.warn("then", fiber.id);
           console.warn(children.map(c => c.id));
           if (!children.some(c => c.isCancelled)) {
-            // TODO: add a test to check the isCancelled here (scenario 2 but resolve proms the other way around)
+            // TODO: add a test to check the isCancelled here (scenario 2 but resolve proms the other way around) -> does not break without it
             console.warn("******************resolve******************");
             if (fiber.parent) {
               console.warn(fiber.parent!.vnode);
             }
             console.warn(fiber.vnode);
-            if (fiber.parent) { // TODO: this is completely wrong: we need to now at which index to put the new vnode
+            if (fiber.parent) { // TODO: this is completely wrong: we need to know at which index to put the new vnode
               fiber.parent.vnode!.children = [<any>fiber.vnode];
             }
             if (fiber.parent) {
@@ -509,7 +510,18 @@ export class Component<T extends Env, Props extends {}> {
         console.warn(oldFiber.vnode);
         console.warn(fiber);
         fiber.parent = oldFiber.parent;
-        fiber.parent.child = fiber; // TODO: not always child, sometimes sibling of a child...
+        if (fiber.parent.child === oldFiber) {
+          fiber.parent.child = fiber;
+        } else {
+          let current = fiber.parent.child!;
+          while (true) {
+            if (current.sibling === oldFiber) {
+              current.sibling = fiber;
+              break;
+            }
+            current = current.sibling!;
+          }
+        }
         fiber.rootFiber = oldFiber.rootFiber;
         if (oldFiber.parent.lastChild === oldFiber) {
           oldFiber.parent.lastChild = fiber;
@@ -521,7 +533,7 @@ export class Component<T extends Env, Props extends {}> {
     }
 
     if (fiber.id === 6) {
-      console.warn("------");
+      // console.warn("------");
       // console.warn(fiber);
       // console.warn(parent);
       // console.warn(this.__owl__.currentFiber);
@@ -625,10 +637,6 @@ export class Component<T extends Env, Props extends {}> {
         nextProps = this.__applyDefaultProps(nextProps, defaultProps);
       }
       // TODO: check fiber cancelled here as well
-      // let resolve;
-      // fiber.promise = new Promise(function (r) {
-      //   resolve = r;
-      // });
       await Promise.all([
         this.willUpdateProps(nextProps),
         this.__owl__.willUpdatePropsCB && this.__owl__.willUpdatePropsCB(nextProps)
@@ -641,9 +649,6 @@ export class Component<T extends Env, Props extends {}> {
 
       await this.__render(fiber);
       console.warn("__render done", fiber.id);
-      // const vnode = await this.__render(fiber);
-      // resolve(vnode);
-      // return <any>fiber.promise;
     }
   }
 

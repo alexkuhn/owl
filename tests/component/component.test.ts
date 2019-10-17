@@ -2850,7 +2850,7 @@ describe("async rendering", () => {
   });
 
   test.only("concurrent renderings scenario 2", async () => {
-    // this test assets that a rendering initiated before another one, and that
+    // this test asserts that a rendering initiated before another one, and that
     // ends after it, is re-mapped to that second rendering
     const defs = [makeDeferred(), makeDeferred()];
     let index = 0;
@@ -2905,6 +2905,66 @@ describe("async rendering", () => {
 
     console.warn('------------------------------------------------- RESOLVE RENDERING INITIATED IN A');
     defs[0].resolve(); // resolve rendering initiated in A
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
+    expect(ComponentA.prototype.__applyPatchQueue).toBeCalledTimes(1);
+    expect(ComponentB.prototype.__applyPatchQueue).toBeCalledTimes(0);
+  });
+
+  test("concurrent renderings scenario 2bis", async () => {
+    const defs = [makeDeferred(), makeDeferred()];
+    let index = 0;
+    let stateB;
+    class ComponentC extends Component<any, any> {
+      static template = xml`<span><t t-esc="props.fromA"/><t t-esc="props.fromB"/></span>`;
+      willUpdateProps() {
+        return defs[index++];
+      }
+    }
+
+    class ComponentB extends Component<any, any> {
+      static template = xml`<p><ComponentC fromA="props.fromA" fromB="state.fromB" /></p>`;
+      static components = { ComponentC };
+      state = useState({ fromB: "b" });
+
+      constructor(parent, props) {
+        super(parent, props);
+        stateB = this.state;
+      }
+    }
+    ComponentB.prototype.__applyPatchQueue = jest.fn(ComponentB.prototype.__applyPatchQueue);
+
+    class ComponentA extends Component<any, any> {
+      static template = xml`<div><ComponentB fromA="state.fromA"/></div>`;
+      static components = { ComponentB };
+      state = useState({ fromA: 1 });
+    }
+    ComponentA.prototype.__applyPatchQueue = jest.fn(ComponentA.prototype.__applyPatchQueue);
+
+    const component = new ComponentA(env);
+    await component.mount(fixture);
+
+    expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
+
+    console.warn('------------------------------------------------- SET STATE COMPONENT A');
+    component.state.fromA = 2;
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
+
+    console.warn('------------------------------------------------- SET STATE COMPONENT B');
+    stateB.fromB = "c";
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
+
+    console.warn('------------------------------------------------- RESOLVE RENDERING INITIATED IN A');
+    defs[0].resolve(); // resolve rendering initiated in A
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>"); // TODO: is this what we want?? 2b could be ok too
+    expect(ComponentA.prototype.__applyPatchQueue).toBeCalledTimes(0);
+    expect(ComponentB.prototype.__applyPatchQueue).toBeCalledTimes(0);
+
+    console.warn('------------------------------------------------- RESOLVE RENDERING INITIATED IN B');
+    defs[1].resolve(); // resolve rendering initiated in B
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
     expect(ComponentA.prototype.__applyPatchQueue).toBeCalledTimes(1);

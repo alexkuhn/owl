@@ -49,15 +49,15 @@ export interface Fiber<Props> {
   vars: any;
   props: Props;
 
+  component: Component<any, any>;
+  vnode: VNode | null;
+
   child: Fiber<any> | null;
   sibling: Fiber<any> | null;
   parent: Fiber<any> | null;
 
   promise: Promise<VNode> | null;
-  rootFiber: Fiber<any> | null;
-  component: Component<any, any>;
-  vnode: VNode | null;
-  //   patchQueue: Fiber<any>[];
+
   //   handlers?: any;
   //   mountedHandlers?: any;
 }
@@ -422,7 +422,6 @@ export class Component<T extends Env, Props extends {}> {
       force,
       scope,
       vars,
-      rootFiber: null,
       isCancelled: false,
       component: this,
       vnode: null,
@@ -434,7 +433,6 @@ export class Component<T extends Env, Props extends {}> {
       shouldPatch: true
     };
 
-    fiber.rootFiber = parent ? parent.rootFiber : fiber;
     this.__owl__.currentFiber = fiber;
     return fiber;
   }
@@ -522,7 +520,11 @@ export class Component<T extends Env, Props extends {}> {
   ): Promise<void> {
     const shouldUpdate = parentFiber.force || this.shouldUpdate(nextProps);
     if (shouldUpdate) {
-      this.__owl__.currentFiber!.rootFiber!.isCancelled = true; // cancel in createFiber??
+        this.__walk(this.__owl__.currentFiber!, f => {
+            f.isCancelled = true;
+            return f.child;
+        });
+
       const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
       if (!parentFiber.child) {
         parentFiber.child = fiber;
@@ -538,7 +540,7 @@ export class Component<T extends Env, Props extends {}> {
         this.willUpdateProps(nextProps),
         this.__owl__.willUpdatePropsCB && this.__owl__.willUpdatePropsCB(nextProps)
       ]);
-      if (parentFiber.rootFiber!.isCancelled) {
+      if (fiber.isCancelled) {
         return;
       }
       this.props = nextProps;

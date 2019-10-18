@@ -415,6 +415,7 @@ export class Component<T extends Env, Props extends {}> {
    * This method is a helper to create a fiber element.
    */
   __createFiber(force, scope, vars, parent?: Fiber<any>): Fiber<Props> {
+    const __owl__ = this.__owl__;
     const fiber: Fiber<Props> = {
       force,
       scope,
@@ -430,7 +431,14 @@ export class Component<T extends Env, Props extends {}> {
       shouldPatch: true
     };
 
-    this.__owl__.currentFiber = fiber;
+    if (__owl__.currentFiber) {
+      this.__walk(__owl__.currentFiber!, f => {
+        f.isCancelled = true;
+        return f.child;
+      });
+    }
+
+    __owl__.currentFiber = fiber;
     return fiber;
   }
 
@@ -518,13 +526,6 @@ export class Component<T extends Env, Props extends {}> {
     const shouldUpdate = parentFiber.force || this.shouldUpdate(nextProps);
     const __owl__ = this.__owl__;
     if (shouldUpdate) {
-      if (__owl__.currentFiber) {
-        this.__walk(__owl__.currentFiber!, f => {
-          f.isCancelled = true;
-          return f.child;
-        });
-      }
-
       const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
       if (!parentFiber.child) {
         parentFiber.child = fiber;

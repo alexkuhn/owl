@@ -2729,7 +2729,7 @@ describe("async rendering", () => {
     expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
   });
 
-  test.skip("concurrent renderings scenario 2", async () => {
+  test("concurrent renderings scenario 2", async () => {
     // this test asserts that a rendering initiated before another one, and that
     // ends after it, is re-mapped to that second rendering
     const defs = [makeDeferred(), makeDeferred()];
@@ -2755,7 +2755,7 @@ describe("async rendering", () => {
     ComponentB.prototype.__applyPatchQueue = jest.fn(ComponentB.prototype.__applyPatchQueue);
 
     class ComponentA extends Component<any, any> {
-      static template = xml`<div><ComponentB fromA="state.fromA"/></div>`;
+      static template = xml`<div><t t-esc="state.fromA"/><ComponentB fromA="state.fromA"/></div>`;
       static components = { ComponentB };
       state = useState({ fromA: 1 });
     }
@@ -2764,24 +2764,24 @@ describe("async rendering", () => {
     const component = new ComponentA(env);
     await component.mount(fixture);
 
-    expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
+    expect(fixture.innerHTML).toBe("<div>1<p><span>1b</span></p></div>");
 
     console.warn("------------------------------------------------- SET STATE COMPONENT A");
     component.state.fromA = 2;
     await nextTick();
-    expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
+    expect(fixture.innerHTML).toBe("<div>1<p><span>1b</span></p></div>");
 
     console.warn("------------------------------------------------- SET STATE COMPONENT B");
     stateB.fromB = "c";
     await nextTick();
-    expect(fixture.innerHTML).toBe("<div><p><span>1b</span></p></div>");
+    expect(fixture.innerHTML).toBe("<div>1<p><span>1b</span></p></div>");
 
     console.warn(
       "------------------------------------------------- RESOLVE RENDERING INITIATED IN B"
     );
     defs[1].resolve(); // resolve rendering initiated in B
     await nextTick();
-    expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
+    expect(fixture.innerHTML).toBe("<div>2<p><span>2c</span></p></div>");
     expect(ComponentA.prototype.__applyPatchQueue).toBeCalledTimes(1);
     expect(ComponentB.prototype.__applyPatchQueue).toBeCalledTimes(0);
 
@@ -2790,7 +2790,7 @@ describe("async rendering", () => {
     );
     defs[0].resolve(); // resolve rendering initiated in A
     await nextTick();
-    expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
+    expect(fixture.innerHTML).toBe("<div>2<p><span>2c</span></p></div>");
     expect(ComponentA.prototype.__applyPatchQueue).toBeCalledTimes(1);
     expect(ComponentB.prototype.__applyPatchQueue).toBeCalledTimes(0);
   });

@@ -121,7 +121,7 @@ describe("Asyncroot", () => {
     expect(fixture.querySelector(".children")!.innerHTML).toBe("<span>1</span><span>1</span>");
   });
 
-  test("asyncroot component: mixed re-renderings", async () => {
+  test.skip("asyncroot component: mixed re-renderings", async () => {
     let def;
     class Child extends Component<any, any> {
       static template = xml`

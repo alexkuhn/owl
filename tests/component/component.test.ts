@@ -2729,7 +2729,7 @@ describe("async rendering", () => {
     expect(fixture.innerHTML).toBe("<div><p><span>2c</span></p></div>");
   });
 
-  test("concurrent renderings scenario 2", async () => {
+  test.skip("concurrent renderings scenario 2", async () => {
     // this test asserts that a rendering initiated before another one, and that
     // ends after it, is re-mapped to that second rendering
     const defs = [makeDeferred(), makeDeferred()];
@@ -3118,6 +3118,45 @@ describe("async rendering", () => {
     await nextTick();
     expect(fixture.innerHTML).toBe("<div><p>2c</p></div>");
     expect(ComponentB.prototype.someValue).toBeCalledTimes(2);
+  });
+
+  test.skip("concurrent renderings scenario 8", async () => {
+    const def = makeDeferred();
+    let stateB;
+    class ComponentB extends Component<any, any> {
+      static template = xml`<p><t t-esc="props.fromA" /><t t-esc="state.fromB" /></p>`;
+      state = useState({ fromB: "b" });
+      constructor(parent, props) {
+        super(parent, props);
+        stateB = this.state;
+      }
+      async willUpdateProps(nextProps) {
+        return def;
+      }
+    }
+
+    class ComponentA extends Component<any, any> {
+      static components = { ComponentB };
+      static template = xml`<div><ComponentB fromA="state.fromA"/></div>`;
+      state = useState({ fromA: 1 });
+    }
+
+    const component = new ComponentA(env);
+    await component.mount(fixture);
+
+    expect(fixture.innerHTML).toBe("<div><p>1b</p></div>");
+
+    component.state.fromA = 2;
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<div><p>1b</p></div>");
+
+    stateB.fromB = 'c';
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<div><p>1c</p></div>");
+
+    def.resolve();
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<div><p>2c</p></div>");
   });
 });
 

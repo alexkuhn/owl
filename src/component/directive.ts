@@ -361,14 +361,14 @@ QWeb.addDirective({
       );
     }
     if (ctx.parentNode) {
-    ctx.addLine(`c${ctx.parentNode}.push(null);`);
+      ctx.addLine(`c${ctx.parentNode}.push(null);`);
     } else {
-        let id = ctx.generateID();
-        ctx.rootContext.rootNode = id;
-        shouldProxy = true;
-        ctx.rootContext.shouldDefineResult = true;
-        ctx.addLine(`let vn${id} = {};`);
-        ctx.addLine(`result = vn${id};`);
+      let id = ctx.generateID();
+      ctx.rootContext.rootNode = id;
+      shouldProxy = true;
+      ctx.rootContext.shouldDefineResult = true;
+      ctx.addLine(`let vn${id} = {};`);
+      ctx.addLine(`result = vn${id};`);
     }
     if (hasDynamicProps) {
       const dynamicProp = ctx.formatExpression(node.getAttribute("t-props")!);

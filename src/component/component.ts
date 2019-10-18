@@ -57,9 +57,6 @@ export interface Fiber<Props> {
   parent: Fiber<any> | null;
 
   promise: Promise<VNode> | null;
-
-  //   handlers?: any;
-  //   mountedHandlers?: any;
 }
 
 /**
@@ -519,11 +516,14 @@ export class Component<T extends Env, Props extends {}> {
     previousSibling?: Fiber<any> | null
   ): Promise<void> {
     const shouldUpdate = parentFiber.force || this.shouldUpdate(nextProps);
+    const __owl__ = this.__owl__;
     if (shouldUpdate) {
-        this.__walk(this.__owl__.currentFiber!, f => {
-            f.isCancelled = true;
-            return f.child;
+      if (__owl__.currentFiber) {
+        this.__walk(__owl__.currentFiber!, f => {
+          f.isCancelled = true;
+          return f.child;
         });
+      }
 
       const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
       if (!parentFiber.child) {
@@ -538,7 +538,7 @@ export class Component<T extends Env, Props extends {}> {
       }
       await Promise.all([
         this.willUpdateProps(nextProps),
-        this.__owl__.willUpdatePropsCB && this.__owl__.willUpdatePropsCB(nextProps)
+        __owl__.willUpdatePropsCB && __owl__.willUpdatePropsCB(nextProps)
       ]);
       if (fiber.isCancelled) {
         return;
@@ -557,6 +557,7 @@ export class Component<T extends Env, Props extends {}> {
     const __owl__ = this.__owl__;
     const target = __owl__.vnode || document.createElement(vnode.sel!);
     __owl__.vnode = patch(target, vnode);
+    __owl__.currentFiber = null;
   }
 
   /**
@@ -601,8 +602,7 @@ export class Component<T extends Env, Props extends {}> {
       errorHandler(e, this);
       return Promise.resolve(h("div"));
     }
-    const __owl__ = this.__owl__;
-    if (__owl__.isDestroyed) {
+    if (this.__owl__.isDestroyed) {
       return Promise.resolve(h("div"));
     }
     return this.__render(fiber);
@@ -656,6 +656,7 @@ export class Component<T extends Env, Props extends {}> {
       (<any>vnode).data.class = Object.assign((<any>vnode).data.class || {}, __owl__.classObj);
     }
     __owl__.vnode = patch(elm, vnode);
+    __owl__.currentFiber = null;
     if (__owl__.parent!.__owl__.isMounted && !__owl__.isMounted) {
       this.__callMounted();
     }

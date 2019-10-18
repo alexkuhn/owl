@@ -7,6 +7,7 @@ exports[`animations t-transition combined with component 1`] = `
     let QWeb = this.constructor;
     let parent = context;
     let owner = context;
+    let sibling = null;
     var h = this.h;
     let c1 = [], p1 = {key:1};
     var vn1 = h('div', p1, c1);
@@ -37,10 +38,11 @@ exports[`animations t-transition combined with component 1`] = `
         };
         utils.transitionRemove(vn, 'chimay', finalize);}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
-        def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined);
+        def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
         def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
     }
     extra.promises.push(def3);
+    sibling = w4.__owl__.currentFiber;
     return vn1;
 }"
 `;
@@ -52,6 +54,7 @@ exports[`animations t-transition combined with t-component and t-if 1`] = `
     let QWeb = this.constructor;
     let parent = context;
     let owner = context;
+    let sibling = null;
     var h = this.h;
     let c1 = [], p1 = {key:1};
     var vn1 = h('div', p1, c1);
@@ -83,10 +86,11 @@ exports[`animations t-transition combined with t-component and t-if 1`] = `
         };
         utils.transitionRemove(vn, 'chimay', finalize);}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
         } else {
-            def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined);
+            def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
             def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
         }
         extra.promises.push(def3);
+        sibling = w4.__owl__.currentFiber;
     }
     return vn1;
 }"
@@ -96,6 +100,7 @@ exports[`animations t-transition with no delay/duration 1`] = `
 "function anonymous(context,extra
 ) {
     let utils = this.constructor.utils;
+    let sibling = null;
     var h = this.h;
     let c1 = [], p1 = {key:1};
     var vn1 = h('span', p1, c1);
@@ -116,6 +121,7 @@ exports[`animations t-transition, on a simple node (insert) 1`] = `
 "function anonymous(context,extra
 ) {
     let utils = this.constructor.utils;
+    let sibling = null;
     var h = this.h;
     let c1 = [], p1 = {key:1};
     var vn1 = h('span', p1, c1);

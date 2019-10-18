@@ -42,15 +42,22 @@ export interface Env {
  */
 export interface Fiber<Props> {
   force: boolean;
-  rootFiber: Fiber<any> | null;
   isCancelled: boolean;
+  shouldPatch: boolean;
+
   scope: any;
   vars: any;
-  patchQueue: Fiber<any>[];
+  props: Props;
+
+  child: Fiber<any> | null;
+  sibling: Fiber<any> | null;
+  parent: Fiber<any> | null;
+
+  promise: Promise<VNode> | null;
+  rootFiber: Fiber<any> | null;
   component: Component<any, any>;
   vnode: VNode | null;
-  props: Props;
-  promise: Promise<VNode> | null;
+//   patchQueue: Fiber<any>[];
   //   handlers?: any;
   //   mountedHandlers?: any;
 }
@@ -308,7 +315,6 @@ export class Component<T extends Env, Props extends {}> {
       }
       this.__patch(vnode);
     } else if (renderBeforeRemount) {
-      fiber.patchQueue.push(fiber);
       fiber.promise = this.__render(fiber);
       await fiber.promise;
       this.__applyPatchQueue(fiber);
@@ -346,7 +352,6 @@ export class Component<T extends Env, Props extends {}> {
       return;
     }
     const fiber = this.__createFiber(force, undefined, undefined, undefined);
-    fiber.patchQueue.push(fiber);
     fiber.promise = this.__render(fiber);
     await fiber.promise;
 
@@ -420,10 +425,14 @@ export class Component<T extends Env, Props extends {}> {
       isCancelled: false,
       component: this,
       vnode: null,
-      patchQueue: parent ? parent.patchQueue : [],
       props: this.props,
-      promise: null
+      promise: null,
+      child: null,
+      sibling: null,
+      parent: parent || null,
+      shouldPatch: true,
     };
+
     fiber.rootFiber = parent ? parent.rootFiber : fiber;
     this.__owl__.currentFiber = fiber;
     return fiber;
@@ -506,14 +515,20 @@ export class Component<T extends Env, Props extends {}> {
   async __updateProps(
     nextProps: Props,
     parentFiber: Fiber<any>,
-    scope?: any,
-    vars?: any
+    scope: any,
+    vars: any,
+    previousSibling?: Fiber<any> | null,
   ): Promise<void> {
     const shouldUpdate = parentFiber.force || this.shouldUpdate(nextProps);
     if (shouldUpdate) {
       this.__owl__.currentFiber!.rootFiber!.isCancelled = true; // cancel in createFiber??
       const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
-      fiber.patchQueue.push(fiber);
+      if (!parentFiber.child) {
+        parentFiber.child = fiber;
+      } else {
+          previousSibling!.sibling = fiber;
+      }
+
       const defaultProps = (<any>this.constructor).defaultProps;
       if (defaultProps) {
         nextProps = this.__applyDefaultProps(nextProps, defaultProps);
@@ -548,6 +563,7 @@ export class Component<T extends Env, Props extends {}> {
    */
   __prepare(parentFiber: Fiber<any>, scope: any, vars: any): Promise<VNode> {
     const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
+    fiber.shouldPatch = false;
     fiber.promise = this.__prepareAndRender(fiber);
     return fiber.promise;
   }
@@ -677,7 +693,15 @@ export class Component<T extends Env, Props extends {}> {
    *   3) Call 'patched' on the component of each patch, in reverse order
    */
   __applyPatchQueue(fiber: Fiber<Props>) {
-    const patchQueue = fiber.patchQueue;
+    const patchQueue:Fiber<any>[] = [];
+    const doWork:(Fiber) => Fiber<any> | null = function (f) {
+      if (f.shouldPatch) {
+        patchQueue.push(f);
+      }
+      return f.child;
+    }
+    this.__walk(fiber, doWork);
+
     let component: Component<any, any> = this;
     try {
       const patchLen = patchQueue.length;
@@ -704,6 +728,33 @@ export class Component<T extends Env, Props extends {}> {
       errorHandler(e, component);
     }
   }
+
+  /**
+   * This function has been taken from
+   * https://medium.com/react-in-depth/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-67f1014d0eb7
+   */
+  __walk(fiber: Fiber<any>, doWork: (Fiber) => Fiber<any> | null) {
+    let root = fiber;
+    let current = fiber;
+    while (true) {
+      const child = doWork(current);
+      if (child) {
+        current = child;
+        continue;
+      }
+      if (current === root) {
+        return;
+      }
+      while (!current.sibling) {
+        if (!current.parent || current.parent === root) {
+          return;
+        }
+        current = current.parent;
+      }
+      current = current.sibling;
+    }
+  }
+
 }
 
 //------------------------------------------------------------------------------

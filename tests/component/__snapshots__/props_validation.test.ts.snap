@@ -7,6 +7,7 @@ exports[`props validation props are validated in dev mode (code snapshot) 1`] = 
     let QWeb = this.constructor;
     let parent = context;
     let owner = context;
+    let sibling = null;
     var h = this.h;
     let c1 = [], p1 = {key:1};
     var vn1 = h('div', p1, c1);
@@ -36,10 +37,11 @@ exports[`props validation props are validated in dev mode (code snapshot) 1`] = 
         def3 = def3.then(vnode=>{if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         utils.validateProps(w4.constructor, props4)
-        def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined);
+        def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
         def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
     }
     extra.promises.push(def3);
+    sibling = w4.__owl__.currentFiber;
     return vn1;
 }"
 `;

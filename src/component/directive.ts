@@ -486,7 +486,7 @@ QWeb.addDirective({
     }
     ctx.addLine(
       `def${defID} = def${defID} || w${componentID}.__updateProps(props${componentID}, ${patchQueueCode}${scopeVars &&
-        ", " + scopeVars});`
+        ", " + scopeVars}, sibling);`
     );
     let keepAliveCode = "";
     if (keepAlive) {
@@ -510,6 +510,7 @@ QWeb.addDirective({
     } else {
       ctx.addLine(`extra.promises.push(def${defID});`);
     }
+    ctx.addLine(`sibling = w${componentID}.__owl__.currentFiber;`);
 
     if (node.hasAttribute("t-if") || node.hasAttribute("t-else") || node.hasAttribute("t-elif")) {
       ctx.closeIf();

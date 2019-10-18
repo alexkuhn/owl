@@ -44,6 +44,7 @@ export interface Fiber<Props> {
   force: boolean;
   isCancelled: boolean;
   shouldPatch: boolean;
+  cancellable: boolean;
 
   scope: any;
   vars: any;
@@ -345,7 +346,7 @@ export class Component<T extends Env, Props extends {}> {
    */
   async render(force: boolean = false): Promise<void> {
     const __owl__ = this.__owl__;
-    if (!__owl__.isMounted) {
+    if (!__owl__.isMounted || (__owl__.currentFiber && !__owl__.currentFiber.cancellable)) {
       return;
     }
     const fiber = this.__createFiber(force, undefined, undefined, undefined);
@@ -421,6 +422,7 @@ export class Component<T extends Env, Props extends {}> {
       scope,
       vars,
       isCancelled: false,
+      cancellable: true,
       component: this,
       vnode: null,
       props: this.props,
@@ -527,6 +529,7 @@ export class Component<T extends Env, Props extends {}> {
     const __owl__ = this.__owl__;
     if (shouldUpdate) {
       const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
+      fiber.cancellable = false;
       if (!parentFiber.child) {
         parentFiber.child = fiber;
       } else {
@@ -545,6 +548,7 @@ export class Component<T extends Env, Props extends {}> {
         return;
       }
       this.props = nextProps;
+      fiber.cancellable = true;
 
       await this.__render(fiber);
     }

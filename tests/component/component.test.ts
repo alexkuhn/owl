@@ -3120,7 +3120,7 @@ describe("async rendering", () => {
     expect(ComponentB.prototype.someValue).toBeCalledTimes(2);
   });
 
-  test.skip("concurrent renderings scenario 8", async () => {
+  test("concurrent renderings scenario 8", async () => {
     const def = makeDeferred();
     let stateB;
     class ComponentB extends Component<any, any> {
@@ -3152,7 +3152,7 @@ describe("async rendering", () => {
 
     stateB.fromB = 'c';
     await nextTick();
-    expect(fixture.innerHTML).toBe("<div><p>1c</p></div>");
+    expect(fixture.innerHTML).toBe("<div><p>1b</p></div>");
 
     def.resolve();
     await nextTick();

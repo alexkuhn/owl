@@ -57,7 +57,7 @@ export interface Fiber<Props> {
   sibling: Fiber<any> | null;
   parent: Fiber<any> | null;
 
-  promise: Promise<VNode> | null;
+  promise: Promise<unknown> | null;
 }
 
 /**
@@ -306,12 +306,12 @@ export class Component<T extends Env, Props extends {}> {
     const fiber = this.__createFiber(false, undefined, undefined, undefined);
     if (!__owl__.vnode) {
       fiber.promise = this.__prepareAndRender(fiber);
-      const vnode = await fiber.promise;
+      await fiber.promise;
       if (__owl__.isDestroyed) {
         // component was destroyed before we get here...
         return;
       }
-      this.__patch(vnode);
+      this.__patch(fiber.vnode);
     } else if (renderBeforeRemount) {
       fiber.promise = this.__render(fiber);
       await fiber.promise;
@@ -570,7 +570,7 @@ export class Component<T extends Env, Props extends {}> {
    * subcomponent is created. It gets its scope and vars, if any, from the
    * parent template.
    */
-  __prepare(parentFiber: Fiber<any>, scope: any, vars: any): Promise<VNode> {
+  __prepare(parentFiber: Fiber<any>, scope: any, vars: any): Promise<unknown> {
     const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
     fiber.shouldPatch = false;
     fiber.promise = this.__prepareAndRender(fiber);
@@ -600,22 +600,23 @@ export class Component<T extends Env, Props extends {}> {
     }
     return p._template;
   }
-  async __prepareAndRender(fiber: Fiber<Props>): Promise<VNode> {
+  async __prepareAndRender(fiber: Fiber<Props>): Promise<unknown> {
     try {
       await Promise.all([this.willStart(), this.__owl__.willStartCB && this.__owl__.willStartCB()]);
     } catch (e) {
       errorHandler(e, this);
-      return Promise.resolve(h("div"));
+      fiber.vnode = h("div");
+      return Promise.resolve();
     }
     if (this.__owl__.isDestroyed) {
-      return Promise.resolve(h("div"));
+      return Promise.resolve();
     }
     return this.__render(fiber);
   }
 
-  __render(fiber: Fiber<Props>): Promise<VNode> {
+  __render(fiber: Fiber<Props>): Promise<unknown> {
     const __owl__ = this.__owl__;
-    const promises: Promise<void>[] = [];
+    const promises: Promise<unknown>[] = [];
     if (__owl__.observer) {
       __owl__.observer.allowMutations = false;
     }
@@ -649,7 +650,7 @@ export class Component<T extends Env, Props extends {}> {
       vnode.data.class = Object.assign(vnode.data.class || {}, __owl__.classObj);
     }
 
-    return Promise.all(promises).then(() => vnode);
+    return Promise.all(promises);
   }
 
   /**

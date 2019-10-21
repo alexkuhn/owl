@@ -460,8 +460,9 @@ QWeb.addDirective({
     if (shouldProxy) {
       registerCode = `utils.defineProxy(vn${ctx.rootNode}, pvnode);`;
     }
+    ctx.addLine(`const fiber = w${componentID}.__owl__.currentFiber;`);
     ctx.addLine(
-      `def${defID} = def${defID}.then(vnode=>{if (w${componentID}.__owl__.isDestroyed){return}${createHook}let pvnode=h(vnode.sel, {key: ${templateId}, hook: {insert(vn) {let nvn=w${componentID}.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;${refExpr}${transitionsInsertCode}},remove() {},destroy(vn) {${finalizeComponentCode}}}});${registerCode}w${componentID}.__owl__.pvnode = pvnode;});`
+      `def${defID} = def${defID}.then(()=>{if (w${componentID}.__owl__.isDestroyed){return}const vnode = fiber.vnode;${createHook}let pvnode=h(vnode.sel, {key: ${templateId}, hook: {insert(vn) {let nvn=w${componentID}.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;${refExpr}${transitionsInsertCode}},remove() {},destroy(vn) {${finalizeComponentCode}}}});${registerCode}w${componentID}.__owl__.pvnode = pvnode;});`
     );
 
     ctx.addElse();

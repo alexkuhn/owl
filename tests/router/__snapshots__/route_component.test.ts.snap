@@ -34,7 +34,8 @@ exports[`RouteComponent can render simple cases 1`] = `
             w3 = new W3(parent, props3);
             parent.__owl__.cmap[templateId3] = w3.__owl__.id;
             def2 = w3.__prepare(extra.fiber, undefined, undefined);
-            def2 = def2.then(vnode=>{if (w3.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId3, hook: {insert(vn) {let nvn=w3.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w3.destroy();}}});utils.defineProxy(vn6, pvnode);w3.__owl__.pvnode = pvnode;});
+            const fiber = w3.__owl__.currentFiber;
+            def2 = def2.then(()=>{const vnode = fiber.vnode;if (w3.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId3, hook: {insert(vn) {let nvn=w3.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w3.destroy();}}});utils.defineProxy(vn6, pvnode);w3.__owl__.pvnode = pvnode;});
         } else {
             def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
             def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;utils.defineProxy(vn6, pvnode);});

@@ -3089,7 +3089,7 @@ describe("async rendering", () => {
     expect(ComponentB.prototype.someValue).toBeCalledTimes(2);
   });
 
-  test.skip("concurrent renderings scenario 7", async () => {
+  test("concurrent renderings scenario 7", async () => {
     class ComponentB extends Component<any, any> {
       static template = xml`<p><t t-esc="props.fromA" /><t t-esc="someValue()" /></p>`;
       state = useState({ fromB: "b" });

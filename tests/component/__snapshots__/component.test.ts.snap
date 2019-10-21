@@ -63,10 +63,15 @@ exports[`basic widget properties reconciliation alg works for t-foreach in t-for
                 parent.__owl__.cmap[templateId10] = w10.__owl__.id;
                 def9 = w10.__prepare(extra.fiber, undefined, undefined);
                 const fiber = w10.__owl__.currentFiber;
-                def9 = def9.then(()=>{const vnode = fiber.vnode;if (w10.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId10, hook: {insert(vn) {let nvn=w10.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w10.destroy();}}});c1[_8_index]=pvnode;w10.__owl__.pvnode = pvnode;});
+                def9 = def9.then(()=>{if (w10.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId10, hook: {insert(vn) {let nvn=w10.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w10.destroy();}}});c1[_8_index]=pvnode;w10.__owl__.pvnode = pvnode;});
             } else {
                 def9 = def9 || w10.__updateProps(props10, extra.fiber, undefined, undefined, sibling);
-                def9 = def9.then(()=>{if (w10.__owl__.isDestroyed) {return};let pvnode=w10.__owl__.pvnode;c1[_8_index]=pvnode;});
+                let pvnode=w10.__owl__.pvnode;c1[_8_index]=pvnode;
+                def9 = def9.then(()=>{if (w10.__owl__.isDestroyed) {return};});
+            }
+            if (w10.__owl__.currentFiber) {
+                w10.__owl__.currentFiber.parentChildren = c1;
+                w10.__owl__.currentFiber.indexInParentChildren = _8_index;
             }
             extra.promises.push(def9);
             sibling = w10.__owl__.currentFiber;
@@ -111,10 +116,15 @@ exports[`class and style attributes with t-component dynamic t-att-style is prop
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.style = _6;}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.style = _6;}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};w4.el.style=_6;let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};w4.el.style=_6;});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -160,12 +170,17 @@ exports[`class and style attributes with t-component t-att-class is properly add
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;context.__owl__.refs[ref6] = w4;},remove() {},destroy(vn) {w4.destroy();delete context.__owl__.refs[ref6];}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;context.__owl__.refs[ref6] = w4;},remove() {},destroy(vn) {w4.destroy();delete context.__owl__.refs[ref6];}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
     }
     w4.__owl__.classObj=_7;
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
+    }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
     return vn1;
@@ -224,12 +239,17 @@ exports[`class and style attributes with t-component t-att-class is properly add
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;context.__owl__.refs[ref6] = w4;},remove() {},destroy(vn) {w4.destroy();delete context.__owl__.refs[ref6];}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;context.__owl__.refs[ref6] = w4;},remove() {},destroy(vn) {w4.destroy();delete context.__owl__.refs[ref6];}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
     }
     w4.__owl__.classObj=_7;
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
+    }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
     return vn1;
@@ -285,12 +305,17 @@ exports[`class and style attributes with t-component t-att-class is properly add
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
     }
     w4.__owl__.classObj=_6;
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
+    }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
     return vn1;
@@ -333,10 +358,15 @@ exports[`composition sub components dom state with t-keepalive is preserved 1`] 
             parent.__owl__.cmap[templateId4] = w4.__owl__.id;
             def3 = w4.__prepare(extra.fiber, undefined, undefined);
             const fiber = w4.__owl__.currentFiber;
-            def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.unmount();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.unmount();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
         } else {
             def3 = def3 || w4.__updateProps(props4, w4.__owl__.isMounted ? extra.fiber : fiber4, undefined, undefined, sibling);
-            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;pvnode.data.hook.insert = vn => {vn.elm.parentNode.replaceChild(w4.el,vn.elm);vn.elm=w4.el;w4.__remount();};c1[_2_index]=pvnode;});
+            let pvnode=w4.__owl__.pvnode;pvnode.data.hook.insert = vn => {vn.elm.parentNode.replaceChild(w4.el,vn.elm);vn.elm=w4.el;w4.__remount();};c1[_2_index]=pvnode;
+            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+        }
+        if (w4.__owl__.currentFiber) {
+            w4.__owl__.currentFiber.parentChildren = c1;
+            w4.__owl__.currentFiber.indexInParentChildren = _2_index;
         }
         extra.promises.push(def3);
         sibling = w4.__owl__.currentFiber;
@@ -395,10 +425,15 @@ exports[`composition sub components with some state rendered in a loop 1`] = `
             parent.__owl__.cmap[templateId7] = w7.__owl__.id;
             def6 = w7.__prepare(extra.fiber, undefined, undefined);
             const fiber = w7.__owl__.currentFiber;
-            def6 = def6.then(()=>{const vnode = fiber.vnode;if (w7.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId7, hook: {insert(vn) {let nvn=w7.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w7.destroy();}}});c1[_5_index]=pvnode;w7.__owl__.pvnode = pvnode;});
+            def6 = def6.then(()=>{if (w7.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId7, hook: {insert(vn) {let nvn=w7.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w7.destroy();}}});c1[_5_index]=pvnode;w7.__owl__.pvnode = pvnode;});
         } else {
             def6 = def6 || w7.__updateProps(props7, extra.fiber, undefined, undefined, sibling);
-            def6 = def6.then(()=>{if (w7.__owl__.isDestroyed) {return};let pvnode=w7.__owl__.pvnode;c1[_5_index]=pvnode;});
+            let pvnode=w7.__owl__.pvnode;c1[_5_index]=pvnode;
+            def6 = def6.then(()=>{if (w7.__owl__.isDestroyed) {return};});
+        }
+        if (w7.__owl__.currentFiber) {
+            w7.__owl__.currentFiber.parentChildren = c1;
+            w7.__owl__.currentFiber.indexInParentChildren = _5_index;
         }
         extra.promises.push(def6);
         sibling = w7.__owl__.currentFiber;
@@ -441,10 +476,15 @@ exports[`composition t-component with dynamic value 1`] = `
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -486,10 +526,15 @@ exports[`composition t-component with dynamic value 2 1`] = `
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -531,10 +576,15 @@ exports[`dynamic t-props basic use 1`] = `
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -578,10 +628,15 @@ exports[`lifecycle hooks willPatch/patched hook with t-keepalive 1`] = `
             parent.__owl__.cmap[templateId4] = w4.__owl__.id;
             def3 = w4.__prepare(extra.fiber, undefined, undefined);
             const fiber = w4.__owl__.currentFiber;
-            def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.unmount();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.unmount();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
         } else {
             def3 = def3 || w4.__updateProps(props4, w4.__owl__.isMounted ? extra.fiber : fiber4, undefined, undefined, sibling);
-            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;pvnode.data.hook.insert = vn => {vn.elm.parentNode.replaceChild(w4.el,vn.elm);vn.elm=w4.el;w4.__remount();};c1[_2_index]=pvnode;});
+            let pvnode=w4.__owl__.pvnode;pvnode.data.hook.insert = vn => {vn.elm.parentNode.replaceChild(w4.el,vn.elm);vn.elm=w4.el;w4.__remount();};c1[_2_index]=pvnode;
+            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+        }
+        if (w4.__owl__.currentFiber) {
+            w4.__owl__.currentFiber.parentChildren = c1;
+            w4.__owl__.currentFiber.indexInParentChildren = _2_index;
         }
         extra.promises.push(def3);
         sibling = w4.__owl__.currentFiber;
@@ -624,10 +679,15 @@ exports[`other directives with t-component t-on with handler bound to argument 1
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, 3));}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, 3));}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -669,10 +729,15 @@ exports[`other directives with t-component t-on with handler bound to empty obje
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, {}));}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, {}));}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -714,10 +779,15 @@ exports[`other directives with t-component t-on with handler bound to empty obje
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, {}));}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, {}));}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -759,10 +829,15 @@ exports[`other directives with t-component t-on with handler bound to object 1`]
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, {val:3}));}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, {val:3}));}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -804,10 +879,15 @@ exports[`other directives with t-component t-on with prevent and self modifiers 
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', function (e) {e.preventDefault();if (e.target !== vn.elm) {return}owner['onEv'].call(owner, e);});}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', function (e) {e.preventDefault();if (e.target !== vn.elm) {return}owner['onEv'].call(owner, e);});}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -849,10 +929,15 @@ exports[`other directives with t-component t-on with self and prevent modifiers 
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', function (e) {if (e.target !== vn.elm) {return}e.preventDefault();owner['onEv'].call(owner, e);});}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', function (e) {if (e.target !== vn.elm) {return}e.preventDefault();owner['onEv'].call(owner, e);});}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -894,10 +979,15 @@ exports[`other directives with t-component t-on with self modifier 1`] = `
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev-1', owner['onEv1'].bind(owner));vn.elm.addEventListener('ev-2', function (e) {if (e.target !== vn.elm) {return}owner['onEv2'].call(owner, e);});}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev-1', owner['onEv1'].bind(owner));vn.elm.addEventListener('ev-2', function (e) {if (e.target !== vn.elm) {return}owner['onEv2'].call(owner, e);});}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -939,10 +1029,15 @@ exports[`other directives with t-component t-on with stop and/or prevent modifie
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev-1', function (e) {e.stopPropagation();owner['onEv1'].call(owner, e);});vn.elm.addEventListener('ev-2', function (e) {e.preventDefault();owner['onEv2'].call(owner, e);});vn.elm.addEventListener('ev-3', function (e) {e.stopPropagation();e.preventDefault();owner['onEv3'].call(owner, e);});}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev-1', function (e) {e.stopPropagation();owner['onEv1'].call(owner, e);});vn.elm.addEventListener('ev-2', function (e) {e.preventDefault();owner['onEv2'].call(owner, e);});vn.elm.addEventListener('ev-3', function (e) {e.stopPropagation();e.preventDefault();owner['onEv3'].call(owner, e);});}};let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -1003,10 +1098,15 @@ exports[`random stuff/miscellaneous snapshotting compiled code 1`] = `
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -1065,10 +1165,15 @@ exports[`random stuff/miscellaneous t-on with handler bound to dynamic argument 
             parent.__owl__.cmap[templateId7] = w7.__owl__.id;
             def6 = w7.__prepare(extra.fiber, undefined, undefined);
             const fiber = w7.__owl__.currentFiber;
-            def6 = def6.then(()=>{const vnode = fiber.vnode;if (w7.__owl__.isDestroyed){return}vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, arg10));}};let pvnode=h(vnode.sel, {key: templateId7, hook: {insert(vn) {let nvn=w7.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w7.destroy();}}});c1[_5_index]=pvnode;w7.__owl__.pvnode = pvnode;});
+            def6 = def6.then(()=>{if (w7.__owl__.isDestroyed){return}const vnode = fiber.vnode;vnode.data.hook = {create(_, vn){vn.elm.addEventListener('ev', owner['onEv'].bind(owner, arg10));}};let pvnode=h(vnode.sel, {key: templateId7, hook: {insert(vn) {let nvn=w7.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w7.destroy();}}});c1[_5_index]=pvnode;w7.__owl__.pvnode = pvnode;});
         } else {
             def6 = def6 || w7.__updateProps(props7, extra.fiber, undefined, undefined, sibling);
-            def6 = def6.then(()=>{if (w7.__owl__.isDestroyed) {return};let pvnode=w7.__owl__.pvnode;c1[_5_index]=pvnode;});
+            let pvnode=w7.__owl__.pvnode;c1[_5_index]=pvnode;
+            def6 = def6.then(()=>{if (w7.__owl__.isDestroyed) {return};});
+        }
+        if (w7.__owl__.currentFiber) {
+            w7.__owl__.currentFiber.parentChildren = c1;
+            w7.__owl__.currentFiber.indexInParentChildren = _5_index;
         }
         extra.promises.push(def6);
         sibling = w7.__owl__.currentFiber;
@@ -1317,10 +1422,15 @@ exports[`t-slot directive can define and call slots 1`] = `
         w4.__owl__.slotId = 1;
         def3 = w4.__prepare(extra.fiber, {}, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w4.destroy();}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, {}, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -1573,10 +1683,15 @@ exports[`t-slot directive slots are rendered with proper context, part 2 2`] = `
             w9.__owl__.slotId = 1;
             def8 = w9.__prepare(extra.fiber, Object.assign({}, scope), undefined);
             const fiber = w9.__owl__.currentFiber;
-            def8 = def8.then(()=>{const vnode = fiber.vnode;if (w9.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId9, hook: {insert(vn) {let nvn=w9.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w9.destroy();}}});c6[_7_index]=pvnode;w9.__owl__.pvnode = pvnode;});
+            def8 = def8.then(()=>{if (w9.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId9, hook: {insert(vn) {let nvn=w9.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w9.destroy();}}});c6[_7_index]=pvnode;w9.__owl__.pvnode = pvnode;});
         } else {
             def8 = def8 || w9.__updateProps(props9, extra.fiber, Object.assign({}, scope), undefined, sibling);
-            def8 = def8.then(()=>{if (w9.__owl__.isDestroyed) {return};let pvnode=w9.__owl__.pvnode;c6[_7_index]=pvnode;});
+            let pvnode=w9.__owl__.pvnode;c6[_7_index]=pvnode;
+            def8 = def8.then(()=>{if (w9.__owl__.isDestroyed) {return};});
+        }
+        if (w9.__owl__.currentFiber) {
+            w9.__owl__.currentFiber.parentChildren = c6;
+            w9.__owl__.currentFiber.indexInParentChildren = _7_index;
         }
         extra.promises.push(def8);
         sibling = w9.__owl__.currentFiber;
@@ -1681,10 +1796,15 @@ exports[`t-slot directive slots are rendered with proper context, part 3 2`] = `
             w10.__owl__.slotId = 1;
             def9 = w10.__prepare(extra.fiber, Object.assign({}, scope), {_7});
             const fiber = w10.__owl__.currentFiber;
-            def9 = def9.then(()=>{const vnode = fiber.vnode;if (w10.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId10, hook: {insert(vn) {let nvn=w10.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w10.destroy();}}});c6[_8_index]=pvnode;w10.__owl__.pvnode = pvnode;});
+            def9 = def9.then(()=>{if (w10.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId10, hook: {insert(vn) {let nvn=w10.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w10.destroy();}}});c6[_8_index]=pvnode;w10.__owl__.pvnode = pvnode;});
         } else {
             def9 = def9 || w10.__updateProps(props10, extra.fiber, Object.assign({}, scope), {_7}, sibling);
-            def9 = def9.then(()=>{if (w10.__owl__.isDestroyed) {return};let pvnode=w10.__owl__.pvnode;c6[_8_index]=pvnode;});
+            let pvnode=w10.__owl__.pvnode;c6[_8_index]=pvnode;
+            def9 = def9.then(()=>{if (w10.__owl__.isDestroyed) {return};});
+        }
+        if (w10.__owl__.currentFiber) {
+            w10.__owl__.currentFiber.parentChildren = c6;
+            w10.__owl__.currentFiber.indexInParentChildren = _8_index;
         }
         extra.promises.push(def9);
         sibling = w10.__owl__.currentFiber;
@@ -1743,10 +1863,15 @@ exports[`t-slot directive slots are rendered with proper context, part 4 1`] = `
         w5.__owl__.slotId = 1;
         def4 = w5.__prepare(extra.fiber, {}, {_2});
         const fiber = w5.__owl__.currentFiber;
-        def4 = def4.then(()=>{const vnode = fiber.vnode;if (w5.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId5, hook: {insert(vn) {let nvn=w5.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w5.destroy();}}});c1[_3_index]=pvnode;w5.__owl__.pvnode = pvnode;});
+        def4 = def4.then(()=>{if (w5.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId5, hook: {insert(vn) {let nvn=w5.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w5.destroy();}}});c1[_3_index]=pvnode;w5.__owl__.pvnode = pvnode;});
     } else {
         def4 = def4 || w5.__updateProps(props5, extra.fiber, {}, {_2}, sibling);
-        def4 = def4.then(()=>{if (w5.__owl__.isDestroyed) {return};let pvnode=w5.__owl__.pvnode;c1[_3_index]=pvnode;});
+        let pvnode=w5.__owl__.pvnode;c1[_3_index]=pvnode;
+        def4 = def4.then(()=>{if (w5.__owl__.isDestroyed) {return};});
+    }
+    if (w5.__owl__.currentFiber) {
+        w5.__owl__.currentFiber.parentChildren = c1;
+        w5.__owl__.currentFiber.indexInParentChildren = _3_index;
     }
     extra.promises.push(def4);
     sibling = w5.__owl__.currentFiber;
@@ -1820,10 +1945,11 @@ exports[`top level sub widgets basic use 1`] = `
         parent.__owl__.cmap[templateId3] = w3.__owl__.id;
         def2 = w3.__prepare(extra.fiber, undefined, undefined);
         const fiber = w3.__owl__.currentFiber;
-        def2 = def2.then(()=>{const vnode = fiber.vnode;if (w3.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId3, hook: {insert(vn) {let nvn=w3.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w3.destroy();}}});utils.defineProxy(vn5, pvnode);w3.__owl__.pvnode = pvnode;});
+        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId3, hook: {insert(vn) {let nvn=w3.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w3.destroy();}}});utils.defineProxy(vn5, pvnode);w3.__owl__.pvnode = pvnode;});
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;utils.defineProxy(vn5, pvnode);});
+        let pvnode=w3.__owl__.pvnode;utils.defineProxy(vn5, pvnode);
+        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};});
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -1865,10 +1991,11 @@ exports[`top level sub widgets can select a sub widget  1`] = `
             parent.__owl__.cmap[templateId3] = w3.__owl__.id;
             def2 = w3.__prepare(extra.fiber, undefined, undefined);
             const fiber = w3.__owl__.currentFiber;
-            def2 = def2.then(()=>{const vnode = fiber.vnode;if (w3.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId3, hook: {insert(vn) {let nvn=w3.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w3.destroy();}}});utils.defineProxy(vn5, pvnode);w3.__owl__.pvnode = pvnode;});
+            def2 = def2.then(()=>{if (w3.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId3, hook: {insert(vn) {let nvn=w3.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w3.destroy();}}});utils.defineProxy(vn5, pvnode);w3.__owl__.pvnode = pvnode;});
         } else {
             def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-            def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;utils.defineProxy(vn5, pvnode);});
+            let pvnode=w3.__owl__.pvnode;utils.defineProxy(vn5, pvnode);
+            def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};});
         }
         extra.promises.push(def2);
         sibling = w3.__owl__.currentFiber;
@@ -1897,10 +2024,11 @@ exports[`top level sub widgets can select a sub widget  1`] = `
             parent.__owl__.cmap[templateId8] = w8.__owl__.id;
             def7 = w8.__prepare(extra.fiber, undefined, undefined);
             const fiber = w8.__owl__.currentFiber;
-            def7 = def7.then(()=>{const vnode = fiber.vnode;if (w8.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId8, hook: {insert(vn) {let nvn=w8.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w8.destroy();}}});utils.defineProxy(vn10, pvnode);w8.__owl__.pvnode = pvnode;});
+            def7 = def7.then(()=>{if (w8.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId8, hook: {insert(vn) {let nvn=w8.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;},remove() {},destroy(vn) {w8.destroy();}}});utils.defineProxy(vn10, pvnode);w8.__owl__.pvnode = pvnode;});
         } else {
             def7 = def7 || w8.__updateProps(props8, extra.fiber, undefined, undefined, sibling);
-            def7 = def7.then(()=>{if (w8.__owl__.isDestroyed) {return};let pvnode=w8.__owl__.pvnode;utils.defineProxy(vn10, pvnode);});
+            let pvnode=w8.__owl__.pvnode;utils.defineProxy(vn10, pvnode);
+            def7 = def7.then(()=>{if (w8.__owl__.isDestroyed) {return};});
         }
         extra.promises.push(def7);
         sibling = w8.__owl__.currentFiber;

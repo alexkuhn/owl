@@ -486,10 +486,11 @@ QWeb.addDirective({
     if (keepAlive) {
       keepAliveCode = `pvnode.data.hook.insert = vn => {vn.elm.parentNode.replaceChild(w${componentID}.el,vn.elm);vn.elm=w${componentID}.el;w${componentID}.__remount();};`;
     }
+    ctx.addLine(`let pvnode=w${componentID}.__owl__.pvnode;${keepAliveCode}${registerCode}`);
     ctx.addLine(
       `def${defID} = def${defID}.then(()=>{if (w${componentID}.__owl__.isDestroyed) {return};${
         tattStyle ? `w${componentID}.el.style=${tattStyle};` : ""
-      }let pvnode=w${componentID}.__owl__.pvnode;${keepAliveCode}${registerCode}});`
+      }});`
     );
     ctx.closeIf();
 
@@ -497,6 +498,12 @@ QWeb.addDirective({
       ctx.addLine(`w${componentID}.__owl__.classObj=${classObj};`);
     }
 
+    if (ctx.parentNode) {
+      ctx.addIf(`w${componentID}.__owl__.currentFiber`);
+      ctx.addLine(`w${componentID}.__owl__.currentFiber.parentChildren = c${ctx.parentNode};`);
+      ctx.addLine(`w${componentID}.__owl__.currentFiber.indexInParentChildren = _${dummyID}_index;`);
+      ctx.closeIf();
+    }
     ctx.addLine(`extra.promises.push(def${defID});`);
     ctx.addLine(`sibling = w${componentID}.__owl__.currentFiber;`);
 

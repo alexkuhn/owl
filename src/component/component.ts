@@ -58,6 +58,9 @@ export interface Fiber<Props> {
   parent: Fiber<any> | null;
 
   promise: Promise<unknown> | null;
+
+  parentChildren: (VNode | null)[] | null;
+  indexInParentChildren: Number | null;
 }
 
 /**
@@ -430,14 +433,41 @@ export class Component<T extends Env, Props extends {}> {
       child: null,
       sibling: null,
       parent: parent || null,
-      shouldPatch: true
+      shouldPatch: true,
+      parentChildren: null,
+      indexInParentChildren: null,
     };
 
-    if (__owl__.currentFiber) {
-      this.__walk(__owl__.currentFiber!, f => {
+    let oldFiber = __owl__.currentFiber;
+    if (oldFiber) {
+      this.__walk(oldFiber!, f => {
         f.isCancelled = true;
         return f.child;
       });
+      if (oldFiber.parent && !parent) {
+        // re-map links
+        fiber.parent = oldFiber.parent;
+        fiber.sibling = oldFiber.sibling;
+        if (fiber.parent.child === oldFiber) {
+          fiber.parent.child = fiber;
+        } else {
+          let current = fiber.parent.child!;
+          while (true) {
+            if (current.sibling === oldFiber) {
+              current.sibling = fiber;
+              break;
+            }
+            current = current.sibling!;
+          }
+        }
+        // re-map promise
+        const childPromises:Promise<VNode>[] = [];
+        this.__walk(fiber.parent.child!, (f) => {
+          childPromises.push(f.promise);
+          return null;
+        });
+        fiber.parent.promise = Promise.all(childPromises);
+      }
     }
 
     __owl__.currentFiber = fiber;

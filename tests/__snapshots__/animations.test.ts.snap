@@ -34,13 +34,18 @@ exports[`animations t-transition combined with component 1`] = `
         parent.__owl__.cmap[templateId4] = w4.__owl__.id;
         def3 = w4.__prepare(extra.fiber, undefined, undefined);
         const fiber = w4.__owl__.currentFiber;
-        def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;utils.transitionInsert(vn, 'chimay');},remove() {},destroy(vn) {let finalize = () => {
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;utils.transitionInsert(vn, 'chimay');},remove() {},destroy(vn) {let finalize = () => {
           w4.destroy();
         };
         utils.transitionRemove(vn, 'chimay', finalize);}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+        let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+    }
+    if (w4.__owl__.currentFiber) {
+        w4.__owl__.currentFiber.parentChildren = c1;
+        w4.__owl__.currentFiber.indexInParentChildren = _2_index;
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -83,13 +88,18 @@ exports[`animations t-transition combined with t-component and t-if 1`] = `
             parent.__owl__.cmap[templateId4] = w4.__owl__.id;
             def3 = w4.__prepare(extra.fiber, undefined, undefined);
             const fiber = w4.__owl__.currentFiber;
-            def3 = def3.then(()=>{const vnode = fiber.vnode;if (w4.__owl__.isDestroyed){return}let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;utils.transitionInsert(vn, 'chimay');},remove() {},destroy(vn) {let finalize = () => {
+            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed){return}const vnode = fiber.vnode;let pvnode=h(vnode.sel, {key: templateId4, hook: {insert(vn) {let nvn=w4.__mount(vnode, pvnode.elm);pvnode.elm=nvn.elm;utils.transitionInsert(vn, 'chimay');},remove() {},destroy(vn) {let finalize = () => {
           w4.destroy();
         };
         utils.transitionRemove(vn, 'chimay', finalize);}}});c1[_2_index]=pvnode;w4.__owl__.pvnode = pvnode;});
         } else {
             def3 = def3 || w4.__updateProps(props4, extra.fiber, undefined, undefined, sibling);
-            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;});
+            let pvnode=w4.__owl__.pvnode;c1[_2_index]=pvnode;
+            def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};});
+        }
+        if (w4.__owl__.currentFiber) {
+            w4.__owl__.currentFiber.parentChildren = c1;
+            w4.__owl__.currentFiber.indexInParentChildren = _2_index;
         }
         extra.promises.push(def3);
         sibling = w4.__owl__.currentFiber;

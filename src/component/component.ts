@@ -60,7 +60,7 @@ export interface Fiber<Props> {
   promise: Promise<unknown> | null;
 
   parentChildren: (VNode | null)[] | null;
-  indexInParentChildren: Number | null;
+  indexInParentChildren: number | null;
 }
 
 /**
@@ -73,6 +73,7 @@ interface Internal<T extends Env, Props> {
   // relationships
   readonly id: number;
   vnode: VNode | null;
+  pvnode: VNode | null;
   isMounted: boolean;
   isDestroyed: boolean;
 
@@ -191,6 +192,7 @@ export class Component<T extends Env, Props extends {}> {
     this.__owl__ = {
       id: id,
       vnode: null,
+      pvnode: null,
       isMounted: false,
       isDestroyed: false,
       parent: p,
@@ -662,6 +664,9 @@ export class Component<T extends Env, Props extends {}> {
       errorHandler(e, this);
     }
     fiber.vnode = vnode;
+    if (fiber.parentChildren) {
+      fiber.parentChildren[fiber.indexInParentChildren!] = __owl__.pvnode;
+    }
     if (__owl__.observer) {
       __owl__.observer.allowMutations = true;
     }
@@ -688,8 +693,13 @@ export class Component<T extends Env, Props extends {}> {
    */
   __mount(vnode: VNode, elm: HTMLElement): VNode {
     const __owl__ = this.__owl__;
+    console.warn(elm);
+    console.warn(vnode);
+    console.warn((<any>vnode).data.class);
     if (__owl__.classObj) {
+      console.warn(__owl__.classObj);
       (<any>vnode).data.class = Object.assign((<any>vnode).data.class || {}, __owl__.classObj);
+      console.warn((<any>vnode).data.class);
     }
     __owl__.vnode = patch(elm, vnode);
     __owl__.currentFiber = null;

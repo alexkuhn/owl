@@ -942,7 +942,7 @@ describe("composition", () => {
     delete QWeb.components["WidgetB"];
   });
 
-  test("can use dynamic components (the class) if given", async () => {
+  test.only("can use dynamic components (the class) if given", async () => {
     class A extends Component<any, any> {
       static template = xml`<span>child a</span>`;
     }
@@ -950,7 +950,7 @@ describe("composition", () => {
       static template = xml`<span>child b</span>`;
     }
     class App extends Component<any, any> {
-      static template = xml`<t t-component="myComponent" t-key="state.child"/>`;
+      static template = xml`<t t-debug="1" t-component="myComponent" t-key="state.child"/>`;
       state = useState({
         child: "a"
       });
@@ -1547,40 +1547,31 @@ describe("props evaluation ", () => {
 
 describe("class and style attributes with t-component", () => {
   test("class is properly added on widget root el", async () => {
-    env.qweb.addTemplate(
-      "ParentWidget",
-      `
-        <div>
-            <t t-component="child" class="a b"/>
-        </div>`
-    );
-    class Child extends Widget {}
-    class ParentWidget extends Widget {
-      static components = { child: Child };
+    class Child extends Widget {
+      static template = xml`<div class="c"/>`;
     }
-    env.qweb.addTemplate("Child", `<div class="c"/>`);
+    class ParentWidget extends Widget {
+      static template = xml`<div><Child class="a b"/></div>`;
+      static components = { Child };
+    }
     const widget = new ParentWidget(env);
     await widget.mount(fixture);
     expect(fixture.innerHTML).toBe(`<div><div class="c a b"></div></div>`);
   });
 
   test("t-att-class is properly added/removed on widget root el", async () => {
-    env.qweb.addTemplate(
-      "ParentWidget",
-      `<div>
-            <t t-component="child" t-att-class="{a:state.a, b:state.b}"/>
-        </div>`
-    );
-    class Child extends Widget {}
+    class Child extends Widget {
+      static template = xml`<div class="c"/>`;
+    }
     class ParentWidget extends Widget {
-      static components = { child: Child };
+      static template = xml`<div><Child t-att-class="{a:state.a, b:state.b}"/></div>`;
+      static components = { Child };
       state = useState({ a: true, b: false });
     }
-    env.qweb.addTemplate("Child", `<div class="c"/>`);
     const widget = new ParentWidget(env);
     await widget.mount(fixture);
     expect(fixture.innerHTML).toBe(`<div><div class="c a"></div></div>`);
-    expect(env.qweb.templates.ParentWidget.fn.toString()).toMatchSnapshot();
+    expect(QWeb.TEMPLATES[ParentWidget.template].fn.toString());
 
     widget.state.a = false;
     widget.state.b = true;
@@ -2385,9 +2376,8 @@ describe("async rendering", () => {
   test("destroying/recreating a subwidget with different props (if start is not over)", async () => {
     let def = makeDeferred();
     let n = 0;
-    env.qweb.addTemplate("W", `<div><t t-if="state.val > 1"><Child val="state.val"/></t></div>`);
-    env.qweb.addTemplate("Child", `<span>child:<t t-esc="props.val"/></span>`);
     class Child extends Widget {
+      static template = xml`<span>child:<t t-esc="props.val"/></span>`;
       constructor(parent, props) {
         super(parent, props);
         n++;
@@ -2397,6 +2387,7 @@ describe("async rendering", () => {
       }
     }
     class W extends Widget {
+      static template = xml`<div><t t-if="state.val > 1"><Child val="state.val"/></t></div>`;
       static components = { Child };
       state = useState({ val: 1 });
     }

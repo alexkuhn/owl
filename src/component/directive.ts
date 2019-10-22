@@ -462,11 +462,10 @@ QWeb.addDirective({
     // ctx.addLine(`console.warn('OIEJOFIJEZOFEFZJZEIOFJZOEFZJEF', key3);`);
     ctx.addLine(`const fiber = w${componentID}.__owl__.currentFiber;`);
     ctx.addLine(`let pvnode = h('dummy', {key: ${templateId}, hook: {insert(vn) {let nvn=w${componentID}.__mount(fiber.vnode, pvnode.elm);pvnode.elm=nvn.elm;${refExpr}${transitionsInsertCode}},remove() {},destroy(vn) {${finalizeComponentCode}}}});`);
-    ctx.addLine(`def${defID}.then(function () {if (w${componentID}.__owl__.isDestroyed) {return;} const vnode = fiber.vnode; pvnode.sel = vnode.sel; ${createHook}});`);
+    ctx.addLine(`def${defID}.then(function () {if (w${componentID}.__owl__.isDestroyed) {return;} const vnode = fiber.vnode; pvnode.sel = vnode.sel; ${createHook}${registerCode}});`);
     if (ctx.parentNode) {
       ctx.addLine(`c${ctx.parentNode}.push(pvnode);`);
     }
-    if (registerCode) { ctx.addLine(registerCode); }
     ctx.addLine(`w${componentID}.__owl__.pvnode = pvnode;`);
 
     // ctx.addLine(
@@ -490,21 +489,15 @@ QWeb.addDirective({
       `def${defID} = def${defID} || w${componentID}.__updateProps(props${componentID}, ${patchQueueCode}${scopeVars &&
         ", " + scopeVars}, sibling);`
     );
-    ctx.addLine(`let pvnode = w${componentID}.__owl__.pvnode;`);
     let keepAliveCode = "";
     if (keepAlive) {
       keepAliveCode = `pvnode.data.hook.insert = vn => {vn.elm.parentNode.replaceChild(w${componentID}.el,vn.elm);vn.elm=w${componentID}.el;w${componentID}.__remount();};`;
-      ctx.addLine(keepAliveCode);
     }
-    if (registerCode) { ctx.addLine(registerCode); }
-    if (ctx.parentNode) {
-      ctx.addLine(`c${ctx.parentNode}.push(pvnode);`);
-    }
-    if (tattStyle) {
-      ctx.addLine(
-        `def${defID} = def${defID}.then(()=>{if (w${componentID}.__owl__.isDestroyed) {return};w${componentID}.el.style=${tattStyle};});`
-      );
-    }
+    ctx.addLine(
+      `def${defID} = def${defID}.then(()=>{if (w${componentID}.__owl__.isDestroyed) {return};${
+        tattStyle ? `w${componentID}.el.style=${tattStyle};` : ""
+      }let pvnode=w${componentID}.__owl__.pvnode;${keepAliveCode}${registerCode}});`
+    );
     ctx.closeIf();
 
     if (classObj) {

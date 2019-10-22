@@ -488,6 +488,8 @@ export class Component<T extends Env, Props extends {}> {
    * all children many times.
    */
   __destroy(parent: Component<any, any> | null) {
+    // console.trace()
+    // console.warn('DESTROY', this.constructor.name);
     const __owl__ = this.__owl__;
     const isMounted = __owl__.isMounted;
     if (isMounted) {

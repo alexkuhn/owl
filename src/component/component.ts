@@ -57,10 +57,8 @@ export interface Fiber<Props> {
   sibling: Fiber<any> | null;
   parent: Fiber<any> | null;
 
-  promise: Promise<unknown> | null;
-
-  parentChildren: (VNode | null)[] | null;
-  indexInParentChildren: number | null;
+  promise: Promise<unknown>;
+  resolve: () => void;
 }
 
 /**
@@ -310,7 +308,7 @@ export class Component<T extends Env, Props extends {}> {
     }
     const fiber = this.__createFiber(false, undefined, undefined, undefined);
     if (!__owl__.vnode) {
-      fiber.promise = this.__prepareAndRender(fiber);
+      this.__prepareAndRender(fiber);
       await fiber.promise;
       if (__owl__.isDestroyed) {
         // component was destroyed before we get here...
@@ -318,7 +316,7 @@ export class Component<T extends Env, Props extends {}> {
       }
       this.__patch(fiber.vnode);
     } else if (renderBeforeRemount) {
-      fiber.promise = this.__render(fiber);
+      this.__render(fiber);
       await fiber.promise;
       this.__applyPatchQueue(fiber);
     }
@@ -355,15 +353,27 @@ export class Component<T extends Env, Props extends {}> {
       return;
     }
     const fiber = this.__createFiber(force, undefined, undefined, undefined);
-    fiber.promise = this.__render(fiber);
+    this.__render(fiber);
     await fiber.promise;
-
     if (__owl__.isMounted && fiber === __owl__.currentFiber) {
-      // check is we can remove this
-      // if (__owl__.isMounted && !fiber.isCancelled) {
-      // we only update the vnode and the actual DOM if no other rendering
-      // occurred between now and when the render method was initially called.
-      this.__applyPatchQueue(fiber);
+      if (fiber.parent) {
+        let root = fiber.parent;
+        while (root.parent) {
+          root = root.parent;
+        }
+        if (!root.shouldPatch) {
+          root.shouldPatch = true;
+          await root.promise;
+          root.component.__applyPatchQueue(root);
+        }
+      } else {
+        // TODO: check is we can remove this
+        // if (__owl__.isMounted && !fiber.isCancelled) {
+
+        // we only update the vnode and the actual DOM if no other rendering
+        // occurred between now and when the render method was initially called.
+        this.__applyPatchQueue(fiber);
+      }
     }
   }
 
@@ -422,6 +432,7 @@ export class Component<T extends Env, Props extends {}> {
    */
   __createFiber(force, scope, vars, parent?: Fiber<any>): Fiber<Props> {
     const __owl__ = this.__owl__;
+    let resolve;
     const fiber: Fiber<Props> = {
       force,
       scope,
@@ -431,17 +442,21 @@ export class Component<T extends Env, Props extends {}> {
       component: this,
       vnode: null,
       props: this.props,
-      promise: null,
+      promise: new Promise(function(r) {
+        resolve = r;
+      }),
       child: null,
       sibling: null,
       parent: parent || null,
       shouldPatch: true,
-      parentChildren: null,
-      indexInParentChildren: null,
+      resolve: () => {
+        if (!fiber.isCancelled) {
+          resolve();
+        }
+      },
     };
-
     let oldFiber = __owl__.currentFiber;
-    if (oldFiber) {
+    if (oldFiber && !oldFiber.isCancelled) {
       this.__walk(oldFiber!, f => {
         f.isCancelled = true;
         return f.child;
@@ -463,12 +478,13 @@ export class Component<T extends Env, Props extends {}> {
           }
         }
         // re-map promise
-        const childPromises:Promise<VNode>[] = [];
+        const children:Fiber<any>[] = [];
         this.__walk(fiber.parent.child!, (f) => {
-          childPromises.push(f.promise);
+          children.push(f);
           return null;
         });
-        fiber.parent.promise = Promise.all(childPromises);
+        const childPromises:Promise<any>[] = children.map(f => f.promise);
+        Promise.all(childPromises).then(fiber.parent.resolve);
       }
     }
 
@@ -605,7 +621,7 @@ export class Component<T extends Env, Props extends {}> {
   __prepare(parentFiber: Fiber<any>, scope: any, vars: any): Promise<unknown> {
     const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
     fiber.shouldPatch = false;
-    fiber.promise = this.__prepareAndRender(fiber);
+    this.__prepareAndRender(fiber);
     return fiber.promise;
   }
 
@@ -638,6 +654,8 @@ export class Component<T extends Env, Props extends {}> {
     } catch (e) {
       errorHandler(e, this);
       fiber.vnode = h("div");
+      fiber.resolve();
+      this.__owl__.currentFiber = null;
       return Promise.resolve();
     }
     if (this.__owl__.isDestroyed) {
@@ -664,9 +682,6 @@ export class Component<T extends Env, Props extends {}> {
       errorHandler(e, this);
     }
     fiber.vnode = vnode;
-    if (fiber.parentChildren) {
-      fiber.parentChildren[fiber.indexInParentChildren!] = __owl__.pvnode;
-    }
     if (__owl__.observer) {
       __owl__.observer.allowMutations = true;
     }
@@ -685,7 +700,7 @@ export class Component<T extends Env, Props extends {}> {
       vnode.data.class = Object.assign(vnode.data.class || {}, __owl__.classObj);
     }
 
-    return Promise.all(promises);
+    return Promise.all(promises).then(fiber.resolve);
   }
 
   /**
@@ -749,6 +764,7 @@ export class Component<T extends Env, Props extends {}> {
 
     let component: Component<any, any> = this;
     try {
+      fiber.shouldPatch = false;
       const patchLen = patchQueue.length;
       for (let i = 0; i < patchLen; i++) {
         component = patchQueue[i].component;
@@ -769,7 +785,9 @@ export class Component<T extends Env, Props extends {}> {
           component.__owl__.patchedCB();
         }
       }
+      fiber.shouldPatch = true;
     } catch (e) {
+      fiber.resolve();
       errorHandler(e, component);
     }
   }

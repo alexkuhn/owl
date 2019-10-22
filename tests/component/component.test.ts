@@ -947,7 +947,7 @@ describe("composition", () => {
       static template = xml`<span>child a</span>`;
     }
     class B extends Component<any, any> {
-      static template = xml`<span>child b</span>`;
+      static template = xml`<div>child b</div>`;
     }
     class App extends Component<any, any> {
       static template = xml`<t t-debug="1" t-component="myComponent" t-key="state.child"/>`;
@@ -963,7 +963,7 @@ describe("composition", () => {
     expect(fixture.innerHTML).toBe("<span>child a</span>");
     widget.state.child = "b";
     await nextTick();
-    expect(fixture.innerHTML).toBe("<span>child b</span>");
+    expect(fixture.innerHTML).toBe("<div>child b</div>");
   });
 
   test("don't fallback to global registry if widget defined locally", async () => {

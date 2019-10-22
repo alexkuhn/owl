@@ -40,25 +40,101 @@ export interface Env {
  *
  * A rendering will cause the creation of a fiber for each impacted components.
  */
-export interface Fiber<Props> {
+export class Fiber {
   force: boolean;
-  isCancelled: boolean;
-  shouldPatch: boolean;
-  cancellable: boolean;
+  isCancelled: boolean = false;
+  shouldPatch: boolean = true;
+  cancellable: boolean = true;
 
   scope: any;
   vars: any;
-  props: Props;
+  props: any;
 
   component: Component<any, any>;
-  vnode: VNode | null;
+  vnode: VNode | null = null;
 
-  child: Fiber<any> | null;
-  sibling: Fiber<any> | null;
-  parent: Fiber<any> | null;
+  root: Fiber | null = null;
+  child: Fiber | null = null;
+  sibling: Fiber | null = null;
+  parent: Fiber | null = null;
 
-  promise: Promise<unknown>;
-  resolve: () => void;
+  counter: number = 0;
+
+  constructor(parent:Fiber | null, component:Component<any, any>, props, scope, vars, force) {
+    this.force = force;
+    this.scope = scope;
+    this.vars = vars;
+    this.props = props;
+    this.component = component;
+
+    this.root = parent ? parent.root : this;
+    this.parent = parent;
+
+    let oldFiber = component.__owl__.currentFiber;
+    if (oldFiber && !oldFiber.isCancelled) {
+      this.__remapFiber(oldFiber);
+    }
+
+    component.__owl__.currentFiber = this;
+  }
+
+  __remapFiber(oldFiber: Fiber) {
+    oldFiber.__walk(f => {
+      f.isCancelled = true;
+      return f.child;
+    });
+    if (oldFiber.parent && !parent) {
+      // re-map links
+      this.parent = oldFiber.parent;
+      this.sibling = oldFiber.sibling;
+      if (this.parent.child === oldFiber) {
+        this.parent.child = this;
+      } else {
+        let current = this.parent.child!;
+        while (true) {
+          if (current.sibling === oldFiber) {
+            current.sibling = this;
+            break;
+          }
+          current = current.sibling!;
+        }
+      }
+      // // re-map promise
+      // const children:Fiber<any>[] = [];
+      // this.__walk(fiber.parent.child!, (f) => {
+      //   children.push(f);
+      //   return null;
+      // });
+      // const childPromises:Promise<any>[] = children.map(f => f.promise);
+      // Promise.all(childPromises).then(fiber.parent.resolve);
+    }
+  }
+
+  /**
+   * This function has been taken from
+   * https://medium.com/react-in-depth/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-67f1014d0eb7
+   */
+  __walk(doWork: (Fiber) => Fiber | null) {
+    let root = this;
+    let current:Fiber = this;
+    while (true) {
+      const child = doWork(current);
+      if (child) {
+        current = child;
+        continue;
+      }
+      if (current === root) {
+        return;
+      }
+      while (!current.sibling) {
+        if (!current.parent || current.parent === root) {
+          return;
+        }
+        current = current.parent;
+      }
+      current = current.sibling;
+    }
+  }
 }
 
 /**
@@ -306,7 +382,8 @@ export class Component<T extends Env, Props extends {}> {
     if (__owl__.isMounted) {
       return;
     }
-    const fiber = this.__createFiber(false, undefined, undefined, undefined);
+    const fiber = new Fiber(null, this, this.props, undefined, undefined, false);
+    // const fiber = this.__createFiber(false, undefined, undefined, undefined);
     if (!__owl__.vnode) {
       this.__prepareAndRender(fiber);
       await fiber.promise;
@@ -352,7 +429,8 @@ export class Component<T extends Env, Props extends {}> {
     if (!__owl__.isMounted || (__owl__.currentFiber && !__owl__.currentFiber.cancellable)) {
       return;
     }
-    const fiber = this.__createFiber(force, undefined, undefined, undefined);
+    const fiber = new Fiber(null, this, this.props, undefined, undefined, force);
+    // const fiber = this.__createFiber(force, undefined, undefined, undefined);
     this.__render(fiber);
     await fiber.promise;
     if (__owl__.isMounted && fiber === __owl__.currentFiber) {
@@ -576,7 +654,8 @@ export class Component<T extends Env, Props extends {}> {
     const shouldUpdate = parentFiber.force || this.shouldUpdate(nextProps);
     const __owl__ = this.__owl__;
     if (shouldUpdate) {
-      const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
+      const fiber = new Fiber(parentFiber, this, this.props, scope, vars, parentFiber.force);
+      // const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
       fiber.cancellable = false;
       if (!parentFiber.child) {
         parentFiber.child = fiber;
@@ -619,7 +698,8 @@ export class Component<T extends Env, Props extends {}> {
    * parent template.
    */
   __prepare(parentFiber: Fiber<any>, scope: any, vars: any): Promise<unknown> {
-    const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
+    const fiber = new Fiber(parentFiber, this, this.props, scope, vars, parentFiber.force);
+    // const fiber = this.__createFiber(parentFiber.force, scope, vars, parentFiber);
     fiber.shouldPatch = false;
     this.__prepareAndRender(fiber);
     return fiber.promise;
@@ -789,32 +869,6 @@ export class Component<T extends Env, Props extends {}> {
     } catch (e) {
       fiber.resolve();
       errorHandler(e, component);
-    }
-  }
-
-  /**
-   * This function has been taken from
-   * https://medium.com/react-in-depth/the-how-and-why-on-reacts-usage-of-linked-list-in-fiber-67f1014d0eb7
-   */
-  __walk(fiber: Fiber<any>, doWork: (Fiber) => Fiber<any> | null) {
-    let root = fiber;
-    let current = fiber;
-    while (true) {
-      const child = doWork(current);
-      if (child) {
-        current = child;
-        continue;
-      }
-      if (current === root) {
-        return;
-      }
-      while (!current.sibling) {
-        if (!current.parent || current.parent === root) {
-          return;
-        }
-        current = current.parent;
-      }
-      current = current.sibling;
     }
   }
 }

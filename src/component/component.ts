@@ -693,13 +693,8 @@ export class Component<T extends Env, Props extends {}> {
    */
   __mount(vnode: VNode, elm: HTMLElement): VNode {
     const __owl__ = this.__owl__;
-    console.warn(elm);
-    console.warn(vnode);
-    console.warn((<any>vnode).data.class);
     if (__owl__.classObj) {
-      console.warn(__owl__.classObj);
       (<any>vnode).data.class = Object.assign((<any>vnode).data.class || {}, __owl__.classObj);
-      console.warn((<any>vnode).data.class);
     }
     __owl__.vnode = patch(elm, vnode);
     __owl__.currentFiber = null;

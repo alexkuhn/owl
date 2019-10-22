@@ -565,7 +565,6 @@ type ArrayOrElement<T> = T | T[];
 type VNodeChildren = ArrayOrElement<VNodeChildElement>;
 
 export function addNS(data: any, children: VNodes | undefined, sel: string | undefined): void {
-  console.warn(sel);
   data.ns = "http://www.w3.org/2000/svg";
   if (sel !== "foreignObject" && children !== undefined) {
     for (let i = 0, iLen = children.length; i < iLen; ++i) {

@@ -942,7 +942,31 @@ describe("composition", () => {
     delete QWeb.components["WidgetB"];
   });
 
-  test.only("can use dynamic components (the class) if given", async () => {
+  test("can use dynamic components (the class) if given", async () => {
+    class A extends Component<any, any> {
+      static template = xml`<span>child a</span>`;
+    }
+    class B extends Component<any, any> {
+      static template = xml`<span>child b</span>`;
+    }
+    class App extends Component<any, any> {
+      static template = xml`<t t-component="myComponent" t-key="state.child"/>`;
+      state = useState({
+        child: "a"
+      });
+      get myComponent() {
+        return this.state.child === "a" ? A : B;
+      }
+    }
+    const widget = new App(env);
+    await widget.mount(fixture);
+    expect(fixture.innerHTML).toBe("<span>child a</span>");
+    widget.state.child = "b";
+    await nextTick();
+    expect(fixture.innerHTML).toBe("<span>child b</span>");
+  });
+
+  test("can use dynamic components (the class) if given (with different root tagname)", async () => {
     class A extends Component<any, any> {
       static template = xml`<span>child a</span>`;
     }
@@ -950,7 +974,7 @@ describe("composition", () => {
       static template = xml`<div>child b</div>`;
     }
     class App extends Component<any, any> {
-      static template = xml`<t t-debug="1" t-component="myComponent" t-key="state.child"/>`;
+      static template = xml`<t t-component="myComponent" t-key="state.child"/>`;
       state = useState({
         child: "a"
       });

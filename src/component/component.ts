@@ -594,6 +594,7 @@ export class Component<T extends Env, Props extends {}> {
    */
   __patch(vnode) {
     const __owl__ = this.__owl__;
+    console.log('_patch', __owl__.vnode);
     const target = __owl__.vnode || document.createElement(vnode.sel!);
     __owl__.vnode = patch(target, vnode);
     __owl__.currentFiber = null;

@@ -4677,17 +4677,17 @@ describe("dynamic t-props", () => {
 });
 
 describe("support svg components", () => {
-  test("add proper namespace to svg", async () => {
+  test.only("add proper namespace to svg", async () => {
     class GComp extends Widget {
       static template = xml`
-        <g>
+        <g t-debug="1">
             <circle cx="50" cy="50" r="4" stroke="green" stroke-width="1" fill="yellow"/>
         </g>`;
     }
 
     class Svg extends Widget {
       static template = xml`
-        <svg>
+        <svg t-debug="1">
             <GComp/>
         </svg>`;
       static components = { GComp };

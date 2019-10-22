@@ -414,6 +414,9 @@ export function init(modules: Array<Partial<Module>>, domApi?: DOMAPI) {
   }
 
   return function patch(oldVnode: VNode | Element, vnode: VNode): VNode {
+    console.warn('-------------- PATCH');
+    console.warn('oldVNode', oldVnode);
+    console.warn('vnode', JSON.stringify(vnode));
     let i: number, iLen: number, elm: Node, parent: Node;
     const insertedVnodeQueue: VNodeQueue = [];
     for (i = 0, iLen = cbs.pre.length; i < iLen; ++i) cbs.pre[i]();

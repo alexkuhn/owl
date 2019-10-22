@@ -22,7 +22,7 @@ describe("RouteComponent", () => {
     router = null;
   });
 
-  test.skip("can render simple cases", async () => {
+  test("can render simple cases", async () => {
     env.qweb.addTemplates(`
         <templates>
             <div t-name="App">

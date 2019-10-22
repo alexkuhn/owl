@@ -41,7 +41,8 @@ exports[`animations t-transition combined with component 1`] = `
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -91,7 +92,8 @@ exports[`animations t-transition combined with t-component and t-if 1`] = `
             w3.__owl__.pvnode = pvnode;
         } else {
             def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-            def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+            let pvnode = w3.__owl__.pvnode;
+            c1.push(pvnode);
         }
         extra.promises.push(def2);
         sibling = w3.__owl__.currentFiber;

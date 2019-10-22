@@ -67,7 +67,8 @@ exports[`basic widget properties reconciliation alg works for t-foreach in t-for
                 w9.__owl__.pvnode = pvnode;
             } else {
                 def8 = def8 || w9.__updateProps(props9, extra.fiber, undefined, undefined, sibling);
-                def8 = def8.then(()=>{if (w9.__owl__.isDestroyed) {return};let pvnode=w9.__owl__.pvnode;});
+                let pvnode = w9.__owl__.pvnode;
+                c1.push(pvnode);
             }
             extra.promises.push(def8);
             sibling = w9.__owl__.currentFiber;
@@ -116,7 +117,9 @@ exports[`class and style attributes with t-component dynamic t-att-style is prop
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};w3.el.style=_5;let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
+        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};w3.el.style=_5;});
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -409,7 +412,8 @@ exports[`composition t-component with dynamic value 1`] = `
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -455,7 +459,8 @@ exports[`composition t-component with dynamic value 2 1`] = `
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -501,7 +506,8 @@ exports[`dynamic t-props basic use 1`] = `
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -549,7 +555,9 @@ exports[`lifecycle hooks willPatch/patched hook with t-keepalive 1`] = `
             w3.__owl__.pvnode = pvnode;
         } else {
             def2 = def2 || w3.__updateProps(props3, w3.__owl__.isMounted ? extra.fiber : fiber3, undefined, undefined, sibling);
-            def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;pvnode.data.hook.insert = vn => {vn.elm.parentNode.replaceChild(w3.el,vn.elm);vn.elm=w3.el;w3.__remount();};});
+            let pvnode = w3.__owl__.pvnode;
+            pvnode.data.hook.insert = vn => {vn.elm.parentNode.replaceChild(w3.el,vn.elm);vn.elm=w3.el;w3.__remount();};
+            c1.push(pvnode);
         }
         extra.promises.push(def2);
         sibling = w3.__owl__.currentFiber;
@@ -596,7 +604,8 @@ exports[`other directives with t-component t-on with handler bound to argument 1
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -642,7 +651,8 @@ exports[`other directives with t-component t-on with handler bound to empty obje
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -688,7 +698,8 @@ exports[`other directives with t-component t-on with handler bound to empty obje
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -734,7 +745,8 @@ exports[`other directives with t-component t-on with handler bound to object 1`]
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -780,7 +792,8 @@ exports[`other directives with t-component t-on with prevent and self modifiers 
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -826,7 +839,8 @@ exports[`other directives with t-component t-on with self and prevent modifiers 
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -872,7 +886,8 @@ exports[`other directives with t-component t-on with self modifier 1`] = `
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -918,7 +933,8 @@ exports[`other directives with t-component t-on with stop and/or prevent modifie
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -983,7 +999,8 @@ exports[`random stuff/miscellaneous snapshotting compiled code 1`] = `
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -1046,7 +1063,8 @@ exports[`random stuff/miscellaneous t-on with handler bound to dynamic argument 
             w6.__owl__.pvnode = pvnode;
         } else {
             def5 = def5 || w6.__updateProps(props6, extra.fiber, undefined, undefined, sibling);
-            def5 = def5.then(()=>{if (w6.__owl__.isDestroyed) {return};let pvnode=w6.__owl__.pvnode;});
+            let pvnode = w6.__owl__.pvnode;
+            c1.push(pvnode);
         }
         extra.promises.push(def5);
         sibling = w6.__owl__.currentFiber;
@@ -1299,7 +1317,8 @@ exports[`t-slot directive can define and call slots 1`] = `
         w3.__owl__.pvnode = pvnode;
     } else {
         def2 = def2 || w3.__updateProps(props3, extra.fiber, {}, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;
@@ -1556,7 +1575,8 @@ exports[`t-slot directive slots are rendered with proper context, part 2 2`] = `
             w8.__owl__.pvnode = pvnode;
         } else {
             def7 = def7 || w8.__updateProps(props8, extra.fiber, Object.assign({}, scope), undefined, sibling);
-            def7 = def7.then(()=>{if (w8.__owl__.isDestroyed) {return};let pvnode=w8.__owl__.pvnode;});
+            let pvnode = w8.__owl__.pvnode;
+            c6.push(pvnode);
         }
         extra.promises.push(def7);
         sibling = w8.__owl__.currentFiber;
@@ -1665,7 +1685,8 @@ exports[`t-slot directive slots are rendered with proper context, part 3 2`] = `
             w9.__owl__.pvnode = pvnode;
         } else {
             def8 = def8 || w9.__updateProps(props9, extra.fiber, Object.assign({}, scope), {_7}, sibling);
-            def8 = def8.then(()=>{if (w9.__owl__.isDestroyed) {return};let pvnode=w9.__owl__.pvnode;});
+            let pvnode = w9.__owl__.pvnode;
+            c6.push(pvnode);
         }
         extra.promises.push(def8);
         sibling = w9.__owl__.currentFiber;
@@ -1728,7 +1749,8 @@ exports[`t-slot directive slots are rendered with proper context, part 4 1`] = `
         w4.__owl__.pvnode = pvnode;
     } else {
         def3 = def3 || w4.__updateProps(props4, extra.fiber, {}, {_2}, sibling);
-        def3 = def3.then(()=>{if (w4.__owl__.isDestroyed) {return};let pvnode=w4.__owl__.pvnode;});
+        let pvnode = w4.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def3);
     sibling = w4.__owl__.currentFiber;
@@ -1807,7 +1829,8 @@ exports[`top level sub widgets basic use 1`] = `
         w2.__owl__.pvnode = pvnode;
     } else {
         def1 = def1 || w2.__updateProps(props2, extra.fiber, undefined, undefined, sibling);
-        def1 = def1.then(()=>{if (w2.__owl__.isDestroyed) {return};let pvnode=w2.__owl__.pvnode;utils.defineProxy(vn4, pvnode);});
+        let pvnode = w2.__owl__.pvnode;
+        utils.defineProxy(vn4, pvnode);
     }
     extra.promises.push(def1);
     sibling = w2.__owl__.currentFiber;
@@ -1854,7 +1877,8 @@ exports[`top level sub widgets can select a sub widget  1`] = `
             w2.__owl__.pvnode = pvnode;
         } else {
             def1 = def1 || w2.__updateProps(props2, extra.fiber, undefined, undefined, sibling);
-            def1 = def1.then(()=>{if (w2.__owl__.isDestroyed) {return};let pvnode=w2.__owl__.pvnode;utils.defineProxy(vn4, pvnode);});
+            let pvnode = w2.__owl__.pvnode;
+            utils.defineProxy(vn4, pvnode);
         }
         extra.promises.push(def1);
         sibling = w2.__owl__.currentFiber;
@@ -1888,7 +1912,8 @@ exports[`top level sub widgets can select a sub widget  1`] = `
             w6.__owl__.pvnode = pvnode;
         } else {
             def5 = def5 || w6.__updateProps(props6, extra.fiber, undefined, undefined, sibling);
-            def5 = def5.then(()=>{if (w6.__owl__.isDestroyed) {return};let pvnode=w6.__owl__.pvnode;utils.defineProxy(vn8, pvnode);});
+            let pvnode = w6.__owl__.pvnode;
+            utils.defineProxy(vn8, pvnode);
         }
         extra.promises.push(def5);
         sibling = w6.__owl__.currentFiber;

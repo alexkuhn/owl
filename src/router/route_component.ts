@@ -3,7 +3,7 @@ import { xml } from "../tags";
 
 export class RouteComponent extends Component<any, {}> {
   static template = xml`
-    <t t-debug="1">
+    <t>
         <t
             t-if="routeComponent"
             t-component="routeComponent"

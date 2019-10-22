@@ -40,7 +40,8 @@ exports[`props validation props are validated in dev mode (code snapshot) 1`] = 
     } else {
         utils.validateProps(w3.constructor, props3)
         def2 = def2 || w3.__updateProps(props3, extra.fiber, undefined, undefined, sibling);
-        def2 = def2.then(()=>{if (w3.__owl__.isDestroyed) {return};let pvnode=w3.__owl__.pvnode;});
+        let pvnode = w3.__owl__.pvnode;
+        c1.push(pvnode);
     }
     extra.promises.push(def2);
     sibling = w3.__owl__.currentFiber;

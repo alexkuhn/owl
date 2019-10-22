@@ -4677,7 +4677,7 @@ describe("dynamic t-props", () => {
 });
 
 describe("support svg components", () => {
-  test.only("add proper namespace to svg", async () => {
+  test.skip("add proper namespace to svg", async () => {
     class GComp extends Widget {
       static template = xml`
         <g t-debug="1">

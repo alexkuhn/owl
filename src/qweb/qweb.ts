@@ -97,7 +97,6 @@ const UTILS: Utils = {
   },
   shallowEqual,
   addNameSpace(vnode) {
-    console.warn('ADDNameSpace', vnode);
     addNS(vnode.data, vnode.children, vnode.sel);
   }
 };
